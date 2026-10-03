@@ -6,7 +6,7 @@ import { allowEvent, isClientEvent, logEvent, summary } from "./events";
 import { getImage, listImages, saveImage } from "./images";
 import { buildPrompt, candidatePhotoFile, isKnownCandidate, sealFile } from "./imagePrompt";
 import { appPageSeo, applySeo } from "./blog";
-import { getPosts, renderIndex, renderNotFound, renderPost, renderRobots, renderRss, renderSitemap } from "./blog";
+import { getPosts, renderIndex, renderLlms, renderNotFound, renderPost, renderRobots, renderRss, renderSitemap } from "./blog";
 import {
   CREDITS_PER_PURCHASE,
   createCheckout,
@@ -289,6 +289,7 @@ Bun.serve({
     if (req.method === "GET") {
       if (url.pathname === "/robots.txt") return xml(renderRobots(), "text/plain");
       if (url.pathname === "/sitemap.xml") return xml(renderSitemap(), "application/xml");
+      if (url.pathname === "/llms.txt") return xml(renderLlms(), "text/plain");
       if (url.pathname === "/blog/rss.xml") return xml(renderRss(), "application/rss+xml");
       if (url.pathname === "/blog" || url.pathname === "/blog/") return html(renderIndex());
       const m = url.pathname.match(/^\/blog\/([a-z0-9-]+)\/?$/);

@@ -16,6 +16,7 @@ export default defineConfig({
       "/blog": `http://localhost:${process.env.API_PORT || 3000}`,
       "/sitemap.xml": `http://localhost:${process.env.API_PORT || 3000}`,
       "/interno": `http://localhost:${process.env.API_PORT || 3000}`,
+      "/llms.txt": `http://localhost:${process.env.API_PORT || 3000}`,
       "/robots.txt": `http://localhost:${process.env.API_PORT || 3000}`,
     },
   },

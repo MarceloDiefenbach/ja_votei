@@ -356,3 +356,34 @@ export function applySeo(html: string, seo: { title: string; description: string
     .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${d}$2`)
     .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${esc(seo.url)}$2`);
 }
+
+
+/** /llms.txt: resumo do site em Markdown para assistentes de IA (formato llmstxt.org). Gerado dos posts. */
+export function renderLlms(): string {
+  const posts = [...getPosts()].sort((a, b) => a.title.localeCompare(b.title, "pt-BR"));
+  const oneLine = (t: string) => t.replace(/\s+/g, " ").trim();
+  return `# ${SITE_NAME}
+
+> ${SITE_NAME} é um site em português do Brasil em que a pessoa envia uma foto e recebe uma imagem de campanha com o selo "Eu já votei", pronta para compartilhar nas redes sociais. O site também tem um blog com guias de educação cívica e de eleições. O conteúdo é apartidário e explica conceitos: para regras, prazos e datas oficiais, a fonte é o TSE (tse.jus.br).
+
+Como funciona: a pessoa escolhe o selo, envia uma foto e a imagem é gerada por inteligência artificial. Cada imagem usa 1 crédito (pacote de 10 créditos por R$ 10, com Pix ou cartão). As imagens geradas ficam salvas por 48 horas.
+
+## Páginas principais
+
+- [Início](${SITE_URL}/): escolha o selo e crie a sua foto.
+- [Selo Eu já votei 13](${SITE_URL}/pt)
+- [Selo Eu já votei 22](${SITE_URL}/pl)
+- [Selo Eu já votei 14](${SITE_URL}/missao)
+- [Selo Eu já votei 55](${SITE_URL}/psd)
+- [Blog](${SITE_URL}/blog): todos os artigos.
+
+## Blog: guias sobre eleições e cidadania
+
+${posts.map(p => `- [${oneLine(p.title)}](${SITE_URL}/blog/${p.slug}): ${oneLine(p.description)}`).join("\n")}
+
+## Outros formatos
+
+- [Sitemap](${SITE_URL}/sitemap.xml)
+- [Feed RSS do blog](${SITE_URL}/blog/rss.xml)
+`;
+}
