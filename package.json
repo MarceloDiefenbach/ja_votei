@@ -1,0 +1,12 @@
+{
+  "name": "ja_votei",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "dev": "bun run dev:api & bun run dev:web & wait",
+    "dev:api": "cd apps/api && bun run dev",
+    "dev:web": "cd apps/web && bun run dev",
+    "build": "cd apps/web && bun run build",
+    "start": "bun apps/api/src/index.ts"
+  }
+}

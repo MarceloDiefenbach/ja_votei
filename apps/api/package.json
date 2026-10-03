@@ -1,0 +1,11 @@
+{
+  "name": "api",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --env-file=../../.env --watch src/index.ts",
+    "start": "bun --env-file=../../.env src/index.ts"
+  },
+  "dependencies": {
+    "mysql2": "^3.11.5"
+  }
+}
