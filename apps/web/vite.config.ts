@@ -15,6 +15,7 @@ export default defineConfig({
       // Blog e SEO são renderizados pela API (HTML no servidor).
       "/blog": `http://localhost:${process.env.API_PORT || 3000}`,
       "/sitemap.xml": `http://localhost:${process.env.API_PORT || 3000}`,
+      "/interno": `http://localhost:${process.env.API_PORT || 3000}`,
       "/robots.txt": `http://localhost:${process.env.API_PORT || 3000}`,
     },
   },

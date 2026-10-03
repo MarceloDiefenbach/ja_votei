@@ -56,11 +56,10 @@ export function buildPrompt(slug: string, userExtra: string, includeCandidate = 
 
   rules.push(
     `Aplique o selo da imagem ${sealIdx} de forma bem visível (por exemplo no canto inferior), COPIANDO-O exatamente como está, sem redesenhar nem alterar letras, número ou cores.`,
-    'No rodapé da imagem, centralizado, escreva exatamente este texto, em letra branca, pequena e discreta (cerca de 10 pixels de altura de fonte em uma imagem de 1024 pixels), com leve sombra para ficar legível: "Imagem gerada por inteligência artificial". Confira a grafia, com acentos.',
-    "NÃO escreva nenhum outro texto, slogan, nome, logotipo de partido ou frase.",
+    "NÃO escreva nenhum outro texto, slogan, nome, logotipo de partido ou frase. O único texto da imagem é o do selo.",
     includeCandidate
-      ? "NÃO inclua nenhuma outra pessoa além da pessoa da imagem 1 e do candidato da imagem 2. Os únicos textos da imagem são o do selo e o aviso do rodapé."
-      : "NÃO inclua nenhuma outra pessoa. Os únicos textos da imagem são o do selo e o aviso do rodapé.",
+      ? "NÃO inclua nenhuma outra pessoa além da pessoa da imagem 1 e do candidato da imagem 2. O único texto da imagem é o do selo."
+      : "NÃO inclua nenhuma outra pessoa. O único texto da imagem é o do selo.",
   );
 
   const extra = userExtra.trim().slice(0, 300);

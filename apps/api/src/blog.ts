@@ -309,5 +309,5 @@ export function renderRss(): string {
 }
 
 export function renderRobots(): string {
-  return `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
+  return `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /interno/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
 }

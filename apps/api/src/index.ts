@@ -1,6 +1,7 @@
 import { join } from "path";
 import { existsSync } from "fs";
 import { ensureSchema, pool } from "./db";
+import { authorize, renderMetrics } from "./metrics";
 import { allowEvent, isClientEvent, logEvent, summary } from "./events";
 import { getImage, listImages, saveImage } from "./images";
 import { buildPrompt, candidatePhotoFile, isKnownCandidate, sealFile } from "./imagePrompt";
@@ -147,6 +148,21 @@ Bun.serve({
       }
       const res = new Response(null, { status: 204 });
       return isNew ? withCookie(res, id) : res;
+    }
+
+    // Tela interna de métricas (HTTP Basic; senha = ADMIN_TOKEN). Desligada sem o token.
+    if ((url.pathname === "/interno/metricas" || url.pathname === "/interno/metricas/") && req.method === "GET") {
+      const auth = authorize(req);
+      if (auth === "off") return new Response("Not found", { status: 404 });
+      if (auth === "denied") {
+        return new Response("Autenticação necessária", {
+          status: 401,
+          headers: { "WWW-Authenticate": 'Basic realm="Métricas Já Votei", charset="UTF-8"' },
+        });
+      }
+      return new Response(await renderMetrics(Number(url.searchParams.get("days") || 7)), {
+        headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store", "X-Robots-Tag": "noindex, nofollow" },
+      });
     }
 
     // Painel: só com ADMIN_TOKEN configurado (Authorization: Bearer <token>).

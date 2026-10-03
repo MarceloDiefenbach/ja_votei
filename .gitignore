@@ -7,3 +7,4 @@ dist
 *.bak
 *.log
 .playwright-mcp
+.maestri/
