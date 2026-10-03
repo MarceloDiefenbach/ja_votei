@@ -5,7 +5,9 @@ import {
   CREDITS_PER_PURCHASE,
   createCheckout,
   getCredits,
-  handleWebhook,
+  getEmail,
+  getLedger,
+  hasPendingPurchase,
   newSessionId,
   reconcileSessionPurchases,
   seal,
@@ -76,10 +78,12 @@ Bun.serve({
 
     if (url.pathname === "/api/credits" && req.method === "GET") {
       const { id, isNew } = sessionFor(req);
-      // Rede de segurança: se o webhook não chegou, conferimos direto na API.
+      // Reconcilia na leitura: quem pagou e voltou sem clicar em nada ainda recebe crédito.
       await reconcileSessionPurchases(id);
       const credits = await getCredits(id);
-      const res = Response.json({ credits, price: CREDITS_PER_PURCHASE });
+      const email = await getEmail(id);
+      const pending = await hasPendingPurchase(id);
+      const res = Response.json({ credits, email, pending, price: CREDITS_PER_PURCHASE });
       return isNew ? withCookie(res, id) : res;
     }
 
@@ -108,30 +112,26 @@ Bun.serve({
       }
     }
 
-    if (url.pathname === "/api/webhooks/abacatepay" && req.method === "POST") {
-      const rawBody = await req.text();
-      let eventId = "";
-      let event = "";
-      try {
-        const parsed = JSON.parse(rawBody);
-        eventId = String(parsed.id || "");
-        event = String(parsed.event || "");
-      } catch {
-        return Response.json({ error: "invalid json" }, { status: 400 });
-      }
-      if (!eventId) return Response.json({ error: "missing event id" }, { status: 400 });
-      if (url.searchParams.get("webhookSecret") !== process.env.WEBHOOK_SECRET) {
-        return Response.json({ error: "unauthorized" }, { status: 401 });
-      }
-      const sig = req.headers.get("X-Webhook-Signature");
-      try {
-        const r = await handleWebhook(rawBody, sig, eventId, event);
-        if (!r.ok) return Response.json({ error: r.reason }, { status: 401 });
-        return Response.json({ ok: true });
-      } catch (e) {
-        console.error("[webhook] erro:", (e as Error).message);
-        return Response.json({ error: "processing error" }, { status: 500 });
-      }
+    if (url.pathname === "/api/credits/check" && req.method === "POST") {
+      const { id, isNew } = sessionFor(req);
+      // O saldo ANTES é a referência: "confirmado" quer dizer que o Pix caiu agora,
+      // não que a pessoa tem crédito sobrando de uma compra anterior.
+      const before = await getCredits(id);
+      await reconcileSessionPurchases(id);
+      const credits = await getCredits(id);
+      const pending = await hasPendingPurchase(id);
+      const res = Response.json({
+        credits,
+        pending,
+        confirmed: credits > before,
+      });
+      return isNew ? withCookie(res, id) : res;
+    }
+
+    if (url.pathname === "/api/credits/history" && req.method === "GET") {
+      const { id, isNew } = sessionFor(req);
+      const res = Response.json({ entries: await getLedger(id) });
+      return isNew ? withCookie(res, id) : res;
     }
 
     if (url.pathname === "/api/edit-image" && req.method === "POST") {
@@ -139,6 +139,7 @@ Bun.serve({
       const form = await req.formData();
       const file = form.get("image");
       const prompt = form.get("prompt");
+      const candidate = form.get("candidate");
       if (!(file instanceof File) || typeof prompt !== "string" || !prompt) {
         return Response.json({ error: "image and prompt required" }, { status: 400 });
       }
@@ -147,6 +148,17 @@ Bun.serve({
       const credits = await getCredits(id);
       if (credits <= 0) {
         const res = Response.json({ error: "Sem créditos. Compre mais para gerar imagens." }, { status: 402 });
+        return isNew ? withCookie(res, id) : res;
+      }
+
+      // Sem email não há como saber de quem é o crédito — então não se gasta.
+      // Confere antes de chamar a OpenAI: é o único jeito de não cobrar por nada.
+      const email = await getEmail(id);
+      if (!email) {
+        const res = Response.json(
+          { error: "Informe seu email para usar os créditos.", code: "email_required" },
+          { status: 403 },
+        );
         return isNew ? withCookie(res, id) : res;
       }
 
@@ -166,7 +178,7 @@ Bun.serve({
       }
 
       // Só debita depois que a imagem saiu.
-      const spent = await spendCredit(id);
+      const spent = await spendCredit(id, typeof candidate === "string" ? candidate.slice(0, 64) : null);
       const b64 = data.data?.[0]?.b64_json;
       const urlImg = data.data?.[0]?.url;
       const out = Response.json({

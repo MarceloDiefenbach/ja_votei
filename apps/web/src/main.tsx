@@ -61,13 +61,19 @@ export const candidates = [
 
 function useCredits() {
   const [credits, setCredits] = React.useState(0);
+  const [email, setEmail] = React.useState("");
+  const [pending, setPending] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [showEmail, setShowEmail] = React.useState(false);
+  const [checking, setChecking] = React.useState(false);
+  const [checkMsg, setCheckMsg] = React.useState("");
 
   const refresh = React.useCallback(async () => {
     const r = await fetch("/api/credits");
     const data = await r.json();
     setCredits(Number(data.credits || 0));
+    setEmail(String(data.email || ""));
+    setPending(Boolean(data.pending));
     setLoading(false);
   }, []);
 
@@ -92,16 +98,56 @@ function useCredits() {
     if (r.ok) {
       const data = await r.json();
       setCredits(Number(data.credits || 0));
+      setEmail(String(data.email || email));
       setShowEmail(false);
       return true;
     }
     return false;
   };
 
-  return { credits, loading, refresh, showEmail, saveEmail };
+  const requestEmail = React.useCallback(() => setShowEmail(true), []);
+
+  // "Já paguei": pergunta à AbacatePay. Como não usamos webhook, o botão é
+  // quem descobre que o Pix caiu — e por isso faz polling por um tempo.
+  const checkPayment = React.useCallback(async () => {
+    setChecking(true);
+    setCheckMsg("");
+    try {
+      for (let attempt = 0; attempt < 10; attempt++) {
+        const r = await fetch("/api/credits/check", { method: "POST" });
+        const data = await r.json();
+        setCredits(Number(data.credits || 0));
+        setPending(Boolean(data.pending));
+        if (data.confirmed) {
+          setCheckMsg("Pagamento confirmado! Seus créditos já estão disponíveis.");
+          setShowEmail(true);
+          return true;
+        }
+        if (attempt < 9) await new Promise(res => setTimeout(res, 3000));
+      }
+      setCheckMsg("Ainda não recebemos a confirmação. Se você pagou, tente de novo em alguns minutos.");
+      return false;
+    } catch {
+      setCheckMsg("Não foi possível consultar agora. Tente novamente.");
+      return false;
+    } finally {
+      setChecking(false);
+    }
+  }, []);
+
+  return {
+    credits, email, pending, loading, refresh,
+    showEmail, saveEmail, requestEmail,
+    checking, checkMsg, checkPayment,
+  };
 }
 
-function useEditImage(refresh: () => void, credits: number) {
+function useEditImage(
+  refresh: () => void,
+  credits: number,
+  requestEmail: () => void,
+  candidateSlug?: string,
+) {
   const [file, setFile] = React.useState<File | null>(null);
   const [preview, setPreview] = React.useState("");
   const [prompt, setPrompt] = React.useState("");
@@ -126,10 +172,15 @@ function useEditImage(refresh: () => void, credits: number) {
     const fd = new FormData();
     fd.append("image", file);
     fd.append("prompt", prompt);
+    if (candidateSlug) fd.append("candidate", candidateSlug);
     try {
       const r = await fetch("/api/edit-image", { method: "POST", body: fd });
       const data = await r.json();
-      if (!r.ok) setError(data.error || "Não foi possível gerar a imagem.");
+      if (r.status === 403 && data.code === "email_required") {
+        // O servidor barrou por falta de email. Abre o campo e deixa a pessoa tentar de novo.
+        requestEmail();
+        setError("");
+      } else if (!r.ok) setError(data.error || "Não foi possível gerar a imagem.");
       else {
         setResult(data.image);
         // O saldo é re-lido do servidor — o front nunca decrementa sozinho.
@@ -455,10 +506,14 @@ function EmailPrompt({ onSubmit, credits }: { onSubmit: (e: string) => Promise<b
 function CandidatePage() {
   const { slug } = useParams();
   const c = candidates.find(c => c.slug === slug);
-  const { credits, loading: creditsLoading, refresh, showEmail, saveEmail } = useCredits();
+  const {
+    credits, pending, loading: creditsLoading, refresh,
+    showEmail, saveEmail, requestEmail,
+    checking, checkMsg, checkPayment,
+  } = useCredits();
   const {
     file, preview, prompt, setPrompt, result, loading, error, onFile, submit,
-  } = useEditImage(refresh, credits);
+  } = useEditImage(refresh, credits, requestEmail, c?.slug);
   const [initialized, setInitialized] = React.useState(false);
 
   const buy = async () => {
@@ -534,6 +589,17 @@ function CandidatePage() {
               <>Você tem <strong>{credits}</strong> crédito(s) • cada imagem consome 1</>
             )}
           </p>
+          {pending && (
+            <div className="rounded-lg border border-border bg-muted/50 p-3 space-y-2">
+              <p className="text-sm text-muted-foreground">
+                Terminou de pagar? O Pix pode demorar alguns minutos para confirmar.
+              </p>
+              <Button onClick={checkPayment} disabled={checking} className="w-full">
+                {checking ? "Conferindo pagamento..." : "Já paguei"}
+              </Button>
+              {checkMsg && <p className="text-sm text-muted-foreground">{checkMsg}</p>}
+            </div>
+          )}
           <Button variant="outline" onClick={buy} className="w-full">
             Comprar 10 créditos — R$ 10 (Pix ou Cartão)
           </Button>

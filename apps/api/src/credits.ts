@@ -57,19 +57,53 @@ export async function getCredits(sessionId: string) {
   return Number(rows[0]?.credits || 0);
 }
 
-/** Debita 1 crédito atomicamente. Retorna false se não houver saldo. */
-export async function spendCredit(sessionId: string): Promise<boolean> {
+/** Debita 1 crédito atomicamente e registra no histórico. Retorna false se não houver saldo. */
+export async function spendCredit(sessionId: string, candidate: string | null = null): Promise<boolean> {
   await ensureSession(sessionId);
-  const [res]: any = await pool.query(
-    "UPDATE sessions SET credits = credits - 1 WHERE id = ? AND credits > 0",
+  const conn = await pool.getConnection();
+  try {
+    await conn.beginTransaction();
+    const [res]: any = await conn.query(
+      "UPDATE sessions SET credits = credits - 1 WHERE id = ? AND credits > 0",
+      [sessionId],
+    );
+    if (res.affectedRows !== 1) {
+      await conn.rollback();
+      return false;
+    }
+    await conn.query(
+      "INSERT INTO credit_ledger (session_id, kind, credits, candidate) VALUES (?, 'spend', -1, ?)",
+      [sessionId, candidate],
+    );
+    await conn.commit();
+    return true;
+  } catch (e) {
+    await conn.rollback();
+    throw e;
+  } finally {
+    conn.release();
+  }
+}
+
+/** Existe compra ainda não confirmada? É o que habilita o botão "Já paguei". */
+export async function hasPendingPurchase(sessionId: string): Promise<boolean> {
+  const [rows]: any = await pool.query(
+    "SELECT 1 FROM purchases WHERE session_id = ? AND status <> 'PAID' LIMIT 1",
     [sessionId],
   );
-  return res.affectedRows === 1;
+  return rows.length > 0;
 }
 
 export async function setEmail(sessionId: string, email: string) {
   await ensureSession(sessionId);
   await pool.query("UPDATE sessions SET email = ? WHERE id = ?", [email, sessionId]);
+}
+
+/** Email da sessão, ou "" se nunca foi informado. */
+export async function getEmail(sessionId: string): Promise<string> {
+  await ensureSession(sessionId);
+  const [rows]: any = await pool.query("SELECT email FROM sessions WHERE id = ?", [sessionId]);
+  return String(rows[0]?.email || "");
 }
 
 /* --------------------------------------------------------------- checkout -- */
@@ -111,7 +145,7 @@ export async function createCheckout(sessionId: string, origin: string) {
 
 /* ----------------------------------------------------------------- crédito -- */
 
-async function creditForBill(billId: string, eventId: string | null) {
+async function creditForBill(billId: string) {
   const [rows]: any = await pool.query(
     "SELECT session_id, credits, status FROM purchases WHERE bill_id = ?",
     [billId],
@@ -120,20 +154,10 @@ async function creditForBill(billId: string, eventId: string | null) {
   if (!purchase) return { ok: false as const, reason: "purchase_not_found" };
   if (purchase.status === "PAID") return { ok: true as const, already: true };
 
-  // Trava: duas entregas simultâneas do mesmo evento não creditam duas vezes.
-  if (eventId) {
-    const [ins]: any = await pool.query(
-      "INSERT IGNORE INTO webhook_events (id, event) VALUES (?, 'checkout.completed')",
-      [eventId],
-    );
-    if ((ins as any).affectedRows === 0) {
-      return { ok: true as const, already: true };
-    }
-  }
-
   const conn = await pool.getConnection();
   try {
     await conn.beginTransaction();
+    // O status <> 'PAID' no WHERE é a trava: duas chamadas simultâneas não creditam duas vezes.
     const [upd]: any = await conn.query(
       "UPDATE purchases SET status = 'PAID' WHERE bill_id = ? AND status <> 'PAID'",
       [billId],
@@ -143,6 +167,10 @@ async function creditForBill(billId: string, eventId: string | null) {
         purchase.credits,
         purchase.session_id,
       ]);
+      await conn.query(
+        "INSERT INTO credit_ledger (session_id, kind, credits, bill_id) VALUES (?, 'purchase', ?, ?)",
+        [purchase.session_id, purchase.credits, billId],
+      );
     }
     await conn.commit();
     return { ok: true as const, already: upd.affectedRows === 0 };
@@ -156,7 +184,8 @@ async function creditForBill(billId: string, eventId: string | null) {
 
 /**
  * Confere na AbacatePay se o checkout foi pago e credita.
- * Cobre o caso de o usuário fechar o browser antes do webhook chegar.
+ * É o caminho de verdade dos créditos: não usamos webhook, então quem paga
+ * precisa perguntar. Chamado pelo botão "Já paguei".
  */
 export async function reconcileSessionPurchases(sessionId: string) {
   const [rows]: any = await pool.query(
@@ -171,7 +200,7 @@ export async function reconcileSessionPurchases(sessionId: string) {
       });
       const data = await res.json();
       if (data?.success && data?.data?.status === "PAID") {
-        await creditForBill(billId, null);
+        await creditForBill(billId);
       }
     } catch (e) {
       console.error("[credits] reconcile falhou para", billId, (e as Error).message);
@@ -179,26 +208,14 @@ export async function reconcileSessionPurchases(sessionId: string) {
   }
 }
 
-export async function handleWebhook(rawBody: string, signature: string | null, eventId: string, event: string) {
-  const expected = crypto
-    .createHmac("sha256", process.env.ABACATEPAY_PUBLIC_KEY || process.env.WEBHOOK_SECRET || "")
-    .update(rawBody)
-    .digest("base64");
-  if (signature) {
-    const a = Buffer.from(expected);
-    const b = Buffer.from(signature);
-    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
-      return { ok: false as const, reason: "invalid_signature" };
-    }
-  }
-  if (event !== "checkout.completed") return { ok: true as const, ignored: true };
-
-  const body = JSON.parse(rawBody);
-  const billId = body?.data?.billing?.id || body?.data?.id || body?.data?.checkoutId;
-  if (!billId) return { ok: true as const, ignored: true };
-
-  const result = await creditForBill(billId, eventId);
-  return { ok: true as const, ...result };
+/** Histórico de créditos da sessão, mais novo primeiro. */
+export async function getLedger(sessionId: string, limit = 50) {
+  const [rows]: any = await pool.query(
+    "SELECT kind, credits, candidate, created_at FROM credit_ledger " +
+      "WHERE session_id = ? ORDER BY id DESC LIMIT ?",
+    [sessionId, limit],
+  );
+  return rows;
 }
 
 export { CREDITS_PER_PURCHASE };

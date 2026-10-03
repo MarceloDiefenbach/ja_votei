@@ -44,12 +44,19 @@ export async function ensureSchema() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 
-  // Eventos de webhook já processados — evita creditar duas vezes em retentativa.
+  // Razão de cada crédito: compra (+) e geração (-). sessions.credits é o saldo,
+  // esta tabela é o histórico — sem ela não há como provar onde o saldo foi.
   await pool.query(`
-    CREATE TABLE IF NOT EXISTS webhook_events (
-      id VARCHAR(128) PRIMARY KEY,
-      event VARCHAR(64) NOT NULL,
-      processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    CREATE TABLE IF NOT EXISTS credit_ledger (
+      id BIGINT AUTO_INCREMENT PRIMARY KEY,
+      session_id CHAR(64) NOT NULL,
+      kind VARCHAR(16) NOT NULL,
+      credits INT NOT NULL,
+      bill_id VARCHAR(64) NULL,
+      candidate VARCHAR(64) NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      KEY idx_session (session_id),
+      KEY idx_kind (kind)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 
