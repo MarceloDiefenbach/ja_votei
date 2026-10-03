@@ -150,10 +150,9 @@ Bun.serve({
       return isNew ? withCookie(res, id) : res;
     }
 
-    // Tela interna de métricas (HTTP Basic; senha = ADMIN_TOKEN). Desligada sem o token.
+    // Tela interna de métricas: aberta (só leitura, sem dado pessoal). Com ADMIN_TOKEN definido, exige senha.
     if ((url.pathname === "/interno/metricas" || url.pathname === "/interno/metricas/") && req.method === "GET") {
       const auth = authorize(req);
-      if (auth === "off") return new Response("Not found", { status: 404 });
       if (auth === "denied") {
         return new Response("Autenticação necessária", {
           status: 401,

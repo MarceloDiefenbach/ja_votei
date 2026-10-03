@@ -3,13 +3,13 @@ import { pool } from "./db";
 
 /**
  * Tela interna /interno/metricas: números do log de eventos (events.ts).
- * Protegida por HTTP Basic (a senha é o ADMIN_TOKEN; o usuário pode ser qualquer um).
- * Sem ADMIN_TOKEN no ambiente a tela fica desligada (404).
+ * É só leitura e sem dado pessoal, então abre sem senha. Se ADMIN_TOKEN estiver definido,
+ * passa a exigir HTTP Basic (a senha é o token; o usuário pode ser qualquer um).
  */
 
-export function authorize(req: Request): "ok" | "off" | "denied" {
+export function authorize(req: Request): "ok" | "denied" {
   const token = process.env.ADMIN_TOKEN;
-  if (!token) return "off";
+  if (!token) return "ok";
   const header = req.headers.get("authorization") || "";
   if (!header.startsWith("Basic ")) return "denied";
   const pass = Buffer.from(header.slice(6), "base64").toString().split(":").slice(1).join(":");
@@ -17,6 +17,9 @@ export function authorize(req: Request): "ok" | "off" | "denied" {
   const b = Buffer.from(token);
   return a.length === b.length && timingSafeEqual(a, b) ? "ok" : "denied";
 }
+
+// Tela aberta = qualquer um pode recarregar. Cache curto por período para não martelar o banco.
+const cache = new Map<number, { at: number; html: string }>();
 
 // created_at está em UTC no servidor; o dia exibido é o de Brasília (UTC-3, sem horário de verão).
 const DAY = "DATE_FORMAT(DATE_SUB(created_at, INTERVAL 3 HOUR), '%Y-%m-%d')";
@@ -94,6 +97,14 @@ const simple = (rows: Row[], label: string) => table([label, "Total"], rows.map(
 
 export async function renderMetrics(daysParam: number): Promise<string> {
   const days = [1, 7, 30, 90].includes(daysParam) ? daysParam : 7;
+  const hit = cache.get(days);
+  if (hit && Date.now() - hit.at < 60_000) return hit.html;
+  const html = await build(days);
+  cache.set(days, { at: Date.now(), html });
+  return html;
+}
+
+async function build(days: number): Promise<string> {
   const d = await collect(days);
   const maxDay = Math.max(1, ...d.byDay.map(r => Number(r.visitors)));
   const top = d.funnel[0].n;
