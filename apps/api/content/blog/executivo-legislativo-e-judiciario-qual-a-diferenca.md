@@ -1,7 +1,7 @@
 ---
 title: Executivo, Legislativo e Judiciário: a diferença
 description: Entenda em linguagem simples a diferença entre os três poderes do Estado, o que cada um faz e por que essa separação existe no Brasil.
-date: 2026-10-03
+date: 2026-03-14
 tags: [educacao civica, poderes do estado, como funciona, regime politico]
 ---
 Toda pessoa já ouviu falar dos três poderes, mas poucos conseguem explicar o que cada um faz. Entender como eles trabalham juntos é a base da educação cívica e ajuda a entender por que uma decisão política demora tanto para virar mudança concreta.

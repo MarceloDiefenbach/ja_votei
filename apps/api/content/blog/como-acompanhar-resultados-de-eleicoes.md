@@ -1,7 +1,7 @@
 ---
 title: Como acompanhar resultados de eleições por fontes confiáveis
 description: Guia para acompanhar o resultado de uma eleição por fontes confiáveis: boletins de apuração, sites oficiais e como evitar números que circulam antes.
-date: 2026-10-03
+date: 2026-09-19
 tags: [resultados, apuracao, boletins, fontes oficiais]
 ---
 Na noite da votação, números circulam antes de qualquer resultado oficial. Este texto explica como acompanhar a apuração sem cair em erro.

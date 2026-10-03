@@ -1,7 +1,7 @@
 ---
 title: O que é um mandato e quem pode ser eleito
 description: Entenda o que é um mandato eleitoral, como ele começa e termina e quais são as condições gerais para ser candidato a um cargo eleito no Brasil.
-date: 2026-10-03
+date: 2026-04-18
 tags: [educacao civica, cargos, regime politico, como funciona]
 ---
 A palavra mandato aparece em toda eleição, mas o conceito é simples: é o direito de exercer um cargo público por um período definido. Entender o que é mandato ajuda a compreender a lógica das eleições, dos suplentes e da substituição de pessoas no cargo.

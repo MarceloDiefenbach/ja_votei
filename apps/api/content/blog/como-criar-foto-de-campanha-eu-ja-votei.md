@@ -1,7 +1,7 @@
 ---
 title: Como criar sua foto de campanha "Eu já votei"
 description: Passo a passo para criar uma foto com o selo "Eu já votei" a partir da sua foto, pronta para compartilhar nas redes sociais depois de votar.
-date: 2026-10-03
+date: 2026-09-29
 tags: [foto de campanha, selo, passo a passo]
 ---
 

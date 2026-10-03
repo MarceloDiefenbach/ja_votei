@@ -1,7 +1,7 @@
 ---
 title: Como ler uma pesquisa eleitoral com sentido crítico
 description: Amostra, margem de erro, intervalo de confiança e metodologia: o que olhar antes de acreditar em um resultado de pesquisa eleitoral.
-date: 2026-10-03
+date: 2026-06-06
 tags: [pesquisa, metodologia, checagem, midia]
 ---
 Pesquisa eleitoral parece número exato, mas é uma estimativa. Entender como ela foi feita muda completamente o quanto se pode confiar no resultado.

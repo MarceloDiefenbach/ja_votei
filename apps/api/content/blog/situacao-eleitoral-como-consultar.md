@@ -1,7 +1,7 @@
 ---
 title: Situação eleitoral: o que significa e como consultar
 description: Entenda o que é a situação eleitoral do seu título, por que ela muda e onde consultar nos canais oficiais para saber se você está em dia com a Justiça Eleitoral.
-date: 2026-10-03
+date: 2026-07-21
 tags: [situação eleitoral, cadastro, TSE, regularidade]
 ---
 

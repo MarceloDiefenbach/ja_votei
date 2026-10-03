@@ -1,7 +1,7 @@
 ---
 title: Cidadania ativa: pequenas ações no dia a dia
 description: Veja como participar da vida pública sem ocupar cargo político, com ações simples de fiscalização, cobrança e cuidado do bairro.
-date: 2026-10-03
+date: 2026-05-15
 tags: [cidadania, participacao, fiscalizacao, comunidade]
 ---
 

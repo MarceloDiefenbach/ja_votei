@@ -1,7 +1,7 @@
 ---
 title: Como denunciar irregularidades eleitorais
 description: Onde procurar os canais oficiais para denunciar irregularidades nas eleições, como organizar a denúncia e o que esperar depois de protocolar, de forma geral.
-date: 2026-10-03
+date: 2026-08-11
 tags: [denúncia, irregularidades, TSE, fiscalização eleitoral]
 ---
 Ver um procedimento duvidoso na eleição e não saber a quem recorrer é uma situação comum. A boa notícia é que existem canais oficiais para receber esse tipo de informação, e o caminho é mais simples do que parece.

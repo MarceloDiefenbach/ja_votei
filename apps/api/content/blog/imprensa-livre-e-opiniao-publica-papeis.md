@@ -1,7 +1,7 @@
 ---
 title: Imprensa livre e opinião pública: qual o papel de cada uma
 description: Entenda a diferença entre imprensa livre e opinião pública, como as duas se relacionam e por que ambas são importantes na democracia.
-date: 2026-10-03
+date: 2026-05-23
 tags: [imprensa, opiniao publica, democracia, midia]
 ---
 

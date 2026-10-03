@@ -1,7 +1,7 @@
 ---
 title: O que faz um senador
 description: Entenda o papel do senador: a representação do estado no Senado, as diferenças em relação à Câmara e o que muda para o eleitor.
-date: 2026-10-03
+date: 2026-03-31
 tags: [educacao civica, senado, poderes do estado, como funciona]
 ---
 O senador representa o estado no Senado Federal. É um cargo que costuma ser menos conhecido do que o de deputado, mas tem um papel importante na construção das leis do país.

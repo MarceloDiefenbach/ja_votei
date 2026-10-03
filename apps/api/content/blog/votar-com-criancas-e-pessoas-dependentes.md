@@ -1,7 +1,7 @@
 ---
 title: Votar com crianças ou pessoas dependentes: planejamento
 description: Dicas práticas de planejamento para votar acompanhado de crianças, idosos ou pessoas com necessidade de apoio, com foco em logística e rotina.
-date: 2026-10-03
+date: 2026-09-08
 tags: [planejamento, criancas, acessibilidade, dia da votacao]
 ---
 Votar acompanhado de crianças, idosos ou pessoas que precisam de apoio exige um pouco de planejamento. A boa notícia é que, com organização, o dia transcorre sem maiores dificuldade.

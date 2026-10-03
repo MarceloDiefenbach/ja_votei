@@ -1,7 +1,7 @@
 ---
 title: Partido, coligação e federação: o que significa
 description: Entenda o que é um partido político, o que é uma coligação e o que é uma federação de partidos, e por que esses termos aparecem na urna.
-date: 2026-10-03
+date: 2026-04-16
 tags: [educacao civica, partidos politicos, regime politico, como funciona]
 ---
 Na urna eletrônica, o voto é dado para um partido. Mas muitas vezes o partido aparece acompanhado de outras palavras, como coligação ou federação. Entender esses termos ajuda a interpretar melhor o resultado da eleição.

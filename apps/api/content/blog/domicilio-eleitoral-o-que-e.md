@@ -1,7 +1,7 @@
 ---
 title: Domicílio eleitoral: o que é e por que importa
 description: Entenda o que é o domicílio eleitoral, por que ele define onde você vota, quando é preciso atualizá-lo e onde confirmar as regras e os prazos oficiais.
-date: 2026-10-03
+date: 2026-07-17
 tags: [domicílio eleitoral, cadastro, mudança de endereço, TSE]
 ---
 

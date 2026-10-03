@@ -1,7 +1,7 @@
 ---
 title: Mesários e fiscais: quem são e o que fazem
 description: Entenda quem são os mesários, os fiscais e os observadores na eleição, o papel de cada um e como a sociedade pode acompanhar o trabalho deles.
-date: 2026-10-03
+date: 2026-08-07
 tags: [mesarios, fiscais, TRE, observadores]
 ---
 No dia da votação, o trabalho de organizar a fila, receber os eleitores e cuidar da urna é feito por um conjunto de pessoas com funções definidas. Este texto explica, em linguagem simples, quem é cada uma.

@@ -1,7 +1,7 @@
 ---
 title: Dicas para pessoas idosas no dia de votar: conforto e calma
 description: Dicas práticas de conforto e organização para pessoas idosas no dia da votação: calçado, água, horário, acompanhante e paciência na fila.
-date: 2026-10-03
+date: 2026-09-05
 tags: [pessoas idosas, votacao, acessibilidade, dicas]
 ---
 Ir às urnas pode ser um esforço maior para quem tem mais de setenta anos. O ponto principal não é a urna: é o trajeto, a espera e o conforto. Estas dicas ajudam a deixar o dia mais tranquilo.

@@ -1,7 +1,7 @@
 ---
 title: O que é o segundo turno e por que ele existe
 description: Entenda o que é o segundo turno nas eleições brasileiras, quando ele acontece e como funciona a escolha na segunda rodada.
-date: 2026-10-03
+date: 2026-04-30
 tags: [eleicoes, segundo turno, como funciona]
 ---
 O segundo turno é uma segunda rodada de votação que acontece em certas eleições. Ele existe porque a regra eleitoral prevê uma segunda chance quando ninguém vence na primeira.

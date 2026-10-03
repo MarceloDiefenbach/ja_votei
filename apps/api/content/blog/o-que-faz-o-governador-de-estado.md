@@ -1,7 +1,7 @@
 ---
 title: O que faz o governador de estado
 description: Entenda o papel do governador: como o governo estadual administra um estado, quais são suas atribuições e como o cargo se diferencia do presidente.
-date: 2026-10-03
+date: 2026-03-28
 tags: [educacao civica, poderes do estado, cargos, como funciona]
 ---
 O governador é a pessoa eleita para liderar o governo de um estado. Entender o que ele faz ajuda a acompanhar as notícias da sua região com mais clareza.

@@ -1,7 +1,7 @@
 ---
 title: Acessibilidade e prioridade no voto: como pedir ajuda
 description: O que a legislação assegura a idosos, pessoas com deficiência, gestantes, lactantes e quem leva criança de colo no dia da votação.
-date: 2026-10-03
+date: 2026-09-03
 tags: [acessibilidade, prioridade, votacao, deficiencia]
 ---
 A Justiça Eleitoral tem regras de atendimento para que a votação de todas as pessoas seja possível. Conhecê-las evita que a pessoa precise explicar a situação várias vezes.

@@ -1,7 +1,7 @@
 ---
 title: O que são suplentes e como funcionam as vagas
 description: Entenda o que é um suplente, quando ele assume uma vaga, o que acontece se a vaga ficar vazia e como isso afeta a composição das câmaras.
-date: 2026-10-03
+date: 2026-04-21
 tags: [educacao civica, cargos, regime politico, como funciona]
 ---
 Se você já ouviu falar em suplente, provavelmente ouviu a frase "assume o mandato do titular". É um conceito simples, mas que gera muita dúvida. Este post explica o que são suplentes, quando eles entram e o que acontece depois.

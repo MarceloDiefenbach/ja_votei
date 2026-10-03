@@ -1,7 +1,7 @@
 ---
 title: O que são políticas públicas, com exemplos do dia a dia
 description: Entenda o que é uma política pública, a diferença entre programa e projeto, e reconhecer políticas públicas no cotidiano.
-date: 2026-10-03
+date: 2026-05-08
 tags: [politicas publicas, programas, Estado, cotidiano]
 ---
 

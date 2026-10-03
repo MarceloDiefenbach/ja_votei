@@ -1,7 +1,7 @@
 ---
 title: Voto facultativo e obrigatório: o que muda para você
 description: Entenda a diferença entre voto facultativo e voto obrigatório no Brasil, para quem se aplica a obrigação e como a regra funciona na prática.
-date: 2026-10-03
+date: 2026-07-24
 tags: [voto obrigatorio, voto facultativo, TRE]
 ---
 No Brasil, o voto é obrigatório para parte da população e facultativo para outra parte. Entender essa divisão ajuda a tirar dúvidas comuns sobre por que algumas pessoas são cobradas e outras não.

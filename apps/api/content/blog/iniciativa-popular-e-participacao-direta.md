@@ -1,7 +1,7 @@
 ---
 title: Iniciativa popular e outras formas de participação direta
 description: Entenda o que é iniciativa popular, como uma proposta vira projeto de lei e quais outras formas de participação direta existem na democracia brasileira.
-date: 2026-10-03
+date: 2026-04-28
 tags: [iniciativa popular, participação popular, projetos de lei, democracia]
 ---
 Nem toda participação política passa pela urna. Existem instrumentos em que a própria população escreve propostas, apresenta mudanças e participa de decisões antes de elas virarem lei.

@@ -1,7 +1,7 @@
 ---
 title: Biometria no cadastro eleitoral: o que é e para que serve
 description: Entenda o que é a biometria do cadastro eleitoral, por que ela é coletada no momento do registro e por que ela não tem relação com o seu voto.
-date: 2026-10-03
+date: 2026-07-14
 tags: [biometria, cadastro eleitoral, identidade, TSE]
 ---
 

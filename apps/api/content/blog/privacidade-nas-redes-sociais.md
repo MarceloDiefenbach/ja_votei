@@ -1,7 +1,7 @@
 ---
 title: Privacidade nas redes sociais: o que evitar mostrar
 description: Guia de privacidade para redes sociais: o que não expor em fotos e selfies, como ajustar o aplicativo e proteger dados pessoais.
-date: 2026-10-03
+date: 2026-07-11
 tags: [privacidade, redes sociais, seguranca, dados pessoais]
 ---
 Postar fotos é divertido, mas cada foto revela mais do que parece. Neste guia, o foco é prático: o que evitar expor e como reduzir a quantidade de informação que circula sobre você.

@@ -1,7 +1,7 @@
 ---
 title: O que faz o presidente da República
 description: Entenda em linguagem simples o que o presidente da República faz depois de eleito: quais são as atribuições do cargo, seus limites e o que observar.
-date: 2026-10-03
+date: 2026-03-26
 tags: [educacao civica, poderes do estado, cargos, como funciona]
 ---
 Quase todo mundo sabe o nome de quem ocupa a presidência, mas poucas pessoas conseguem dizer com clareza o que a pessoa eleita faz. Entender o cargo ajuda a avaliar propostas e a acompanhar o debate político com mais calma.

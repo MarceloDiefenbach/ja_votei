@@ -1,7 +1,7 @@
 ---
 title: Deputado federal e estadual: qual a diferença
 description: Entenda a diferença entre deputado federal e deputado estadual: onde cada um atua, como cada um é eleito e por que os dois aparecem na urna.
-date: 2026-10-03
+date: 2026-04-03
 tags: [educacao civica, poderes do estado, cargos, como funciona]
 ---
 Na urna eletrônica você vê dois cargos parecidos: deputado federal e deputado estadual. Os dois são parlamentares, mas atendem a esferas diferentes e são eleitos por sistemas diferentes.

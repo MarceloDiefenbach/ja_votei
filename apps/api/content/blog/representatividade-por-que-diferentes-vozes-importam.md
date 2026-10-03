@@ -1,7 +1,7 @@
 ---
 title: Representatividade: por que diferentes vozes importam
 description: Entenda o que é representatividade, por que grupos diferentes precisam estar presentes na vida pública e como isso melhora as decisões.
-date: 2026-10-03
+date: 2026-05-12
 tags: [representatividade, democracia, cidadania, diversidade]
 ---
 

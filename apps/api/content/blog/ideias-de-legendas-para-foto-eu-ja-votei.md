@@ -1,7 +1,7 @@
 ---
 title: Ideias de legendas para a foto "Eu já votei"
 description: Sugestões de legendas para acompanhar a foto "Eu já votei" nas redes sociais, em linguagem neutra e sem pedir voto a ninguém.
-date: 2026-10-03
+date: 2026-09-22
 tags: [foto de campanha, legendas, Eu ja votei, redes sociais]
 ---
 Acompanhar a foto "Eu já votei" com uma legenda deixa a publicação mais pessoal. As sugestões abaixo são neutras, curtas e não pedem voto a ninguém.

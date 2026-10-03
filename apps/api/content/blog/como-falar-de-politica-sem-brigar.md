@@ -1,7 +1,7 @@
 ---
 title: Como falar de política com família e amigos sem brigar
 description: Dicas práticas para conversar sobre política com família e amigos sem transformar a conversa em conflito: escutar, pergunta e deixar o outro falar.
-date: 2026-10-03
+date: 2026-06-12
 tags: [conversas, politica, familia, convivencia]
 ---
 Conversar sobre política com quem a gente gosta é um desafio comum. A boa notícia é que dá para falar do assunto sem briga. O segredo está em como conduzir a conversa, não no tema.

@@ -1,7 +1,7 @@
 ---
 title: O que faz o prefeito e o que faz o vereador
 description: Entenda a diferença entre prefeito e vereador: como o município é governado, o papel da Câmara Municipal e como avaliar a gestão da sua cidade.
-date: 2026-10-03
+date: 2026-04-07
 tags: [educacao civica, poderes do estado, cargos, como funciona]
 ---
 O prefeito e o vereador são os dois cargos relacionados à prefeitura na eleição municipal. Eles trabalham lado a lado, mas fazem coisas bem diferentes: um administra a cidade, o outro participa da Câmara que fiscaliza e legisla no município.

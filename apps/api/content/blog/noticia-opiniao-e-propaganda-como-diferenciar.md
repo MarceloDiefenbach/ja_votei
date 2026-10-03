@@ -1,7 +1,7 @@
 ---
 title: Notícia, opinião e propaganda: como diferenciar
 description: Entenda a diferença entre notícia, opinião e propaganda, o que caracteriza cada uma e por que essa distinção importa na hora de compartilhar conteúdo eleitoral.
-date: 2026-10-03
+date: 2026-05-26
 tags: [notícia, opinião, propaganda, checagem]
 ---
 Nem todo texto sobre uma eleição diz a mesma coisa. Alguns informam fatos, outros dão opinião e outros procuram influenciar a sua decisão.

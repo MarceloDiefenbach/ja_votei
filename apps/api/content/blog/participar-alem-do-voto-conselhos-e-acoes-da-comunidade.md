@@ -1,7 +1,7 @@
 ---
 title: Participar além do voto: conselhos e ações da comunidade
 description: Votar é o começo. Veja como participar da vida do bairro por conselhos, associações de moradores e ações comunitárias que precisam de gente.
-date: 2026-10-03
+date: 2026-05-19
 tags: [participacao, conselhos, comunidade, bairros]
 ---
 O voto é o momento mais visível da democracia, mas não é o único. Boa parte das decisões que afetam o dia a dia acontece em conselhos, associações de bairro, conselhos tutelares e prefeituras, e quase sempre falta gente disposta a acompanhar.

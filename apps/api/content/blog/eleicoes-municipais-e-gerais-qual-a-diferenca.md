@@ -1,7 +1,7 @@
 ---
 title: Eleições municipais e gerais: qual a diferença
 description: Entenda o que muda entre a eleição municipal e a eleição geral no Brasil: os cargos em disputa, a frequência das votações e o que você escolhe em cada uma.
-date: 2026-10-03
+date: 2026-04-14
 tags: [eleições municipais, eleições gerais, cargos, calendário eleitoral]
 ---
 Nem toda eleição é igual. As eleições municipais e as eleições gerais acontecem em ritmos diferentes, elegem pessoas diferentes e produzem efeitos diferentes na cidade e no país. Entender a diferença ajuda a não achar que você perdeu alguma coisa.

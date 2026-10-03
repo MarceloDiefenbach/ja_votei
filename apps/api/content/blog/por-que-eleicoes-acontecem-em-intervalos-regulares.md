@@ -1,7 +1,7 @@
 ---
 title: Por que as eleições acontecem em intervalos regulares
 description: Entenda o que é mandato eletivo, por que as eleições têm prazo definido e como a alternância de poder funciona na democracia brasileira.
-date: 2026-10-03
+date: 2026-03-20
 tags: [eleicoes, democracia, mandato, alternancia]
 ---
 

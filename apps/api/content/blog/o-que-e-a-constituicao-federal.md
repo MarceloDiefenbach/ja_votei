@@ -1,7 +1,7 @@
 ---
 title: O que é a Constituição e por que ela importa para o voto
 description: Entenda o que é a Constituição, como ela organiza o Estado e por que ela define regras Valeria important para o seu voto nas eleições.
-date: 2026-10-03
+date: 2026-03-12
 tags: [educacao civica, constituicao, regime politico, como funciona]
 ---
 A Constituição é o documento mais importante do ordenamento jurídico de um país. No Brasil, ela foi promulgada em 1988 e é, até hoje, um marco da redemocratização. Entender o que ela é ajuda a entender por que certas regras não podem ser mudadas por vontade simples dos governantes.

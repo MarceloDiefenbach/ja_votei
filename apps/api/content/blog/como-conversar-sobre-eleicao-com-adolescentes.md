@@ -1,7 +1,7 @@
 ---
 title: Como conversar sobre eleição com adolescentes
 description: Adolescentes já encontram política o tempo todo nas redes. Veja como abrir a conversa em casa, usar exemplos do cotidiano e evitar a briga.
-date: 2026-10-03
+date: 2026-06-19
 tags: [adolescentes, familia, conversas, midia]
 ---
 Adolescentes já encontram política o tempo todo: no feed do celular, na escola, na conversa com amigos. Se os adultos não abrem a conversa, eles se informam sozinhos, e nem sempre por boas fontes.

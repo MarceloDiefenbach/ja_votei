@@ -1,7 +1,7 @@
 ---
 title: Como explicar eleições para crianças em casa
 description: Linguagem simples para explicar votação, urna e candidatos a crianças, com exemplos do cotidiano e respostas para perguntas difíceis.
-date: 2026-10-03
+date: 2026-06-23
 tags: [criancas, familia, votacao, exemplos]
 ---
 Crianças fazem perguntas sobre política desde cedo. A boa notícia é que a ideia central é simples de explicar: um grupo de pessoas escolhe quem vai tomar decisões por todos.

@@ -1,7 +1,7 @@
 ---
 title: Como consultar seu local de votação, zona e seção
 description: Passo a passo para descobrir onde você vai votar: consultar o local, a zona eleitoral e o número da seção na página do TSE e no app e-Título.
-date: 2026-10-03
+date: 2026-08-21
 tags: [local de votacao, zona eleitoral, secao, TSE, e-Titulo]
 ---
 Descobrir o local de votação com antecedência é o passo que evita quase todos os problemas do dia. O endereço, a zona e a seção podem ser consultados de graça, online, e valem para aquela eleição específica.

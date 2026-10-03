@@ -1,7 +1,7 @@
 ---
 title: Como funciona o horário eleitoral gratuito
 description: Entenda o que é o horário eleitoral gratuito no rádio e na TV, como o tempo é dividido entre os partidos e como assistir com olhar crítico.
-date: 2026-10-03
+date: 2026-06-27
 tags: [horario eleitoral, propaganda, midia, consulta]
 ---
 

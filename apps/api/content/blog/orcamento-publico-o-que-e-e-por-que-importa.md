@@ -1,7 +1,7 @@
 ---
 title: Orçamento público: o que é e por que importa
 description: Entenda como funciona o orçamento público, de onde vem o dinheiro público, para onde ele vai e como acompanhar os gastos.
-date: 2026-10-03
+date: 2026-05-02
 tags: [orcamento, transparencia, gastos, servicios]
 ---
 

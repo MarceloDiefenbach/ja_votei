@@ -1,7 +1,7 @@
 ---
 title: Primeiro voto: guia para quem vota pela primeira vez
 description: Guia prático para quem vai votar pela primeira vez: o que levar, como funciona a urna, o que é o número branco e como lidar com a ansiedade.
-date: 2026-10-03
+date: 2026-08-15
 tags: [primeiro voto, urna eletronica, guia, iniciantes]
 ---
 Primeira vez na urna dá um misto de ansiedade e curiosidade. A boa notícia: o processo é simples, e este texto explica cada passo sem complicação.

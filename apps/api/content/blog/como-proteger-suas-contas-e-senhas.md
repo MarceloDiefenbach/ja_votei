@@ -1,7 +1,7 @@
 ---
 title: Como proteger suas contas e senhas no dia a dia
 description: Dicas práticas para proteger suas contas, senhas e dados pessoais no dia a dia: senhas diferentes, verificação em duas etapas e cuidado com links recebidos.
-date: 2026-10-03
+date: 2026-07-07
 tags: [senhas, segurança digital, contas, privacidade]
 ---
 Proteger conta é simples, mas exige alguns hábitos.

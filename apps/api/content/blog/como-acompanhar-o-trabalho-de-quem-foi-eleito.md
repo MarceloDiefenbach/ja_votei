@@ -1,7 +1,7 @@
 ---
 title: Como acompanhar o trabalho de quem foi eleito
 description: Portal da transparência, atas das sessões e prestação de contas: caminhos públicos para verificar o que aconteceu depois da eleição.
-date: 2026-10-03
+date: 2026-05-21
 tags: [transparencia, acompanhamento, sucesso, prefeitura]
 ---
 Acompanhar quem foi eleito é continuar participando. Existem caminhos públicos e simples para verificar o que foi prometido, o que foi feito e para onde foi o dinheiro.

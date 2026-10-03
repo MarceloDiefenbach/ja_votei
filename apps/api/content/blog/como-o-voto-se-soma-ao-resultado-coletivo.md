@@ -1,7 +1,7 @@
 ---
 title: Como o voto de cada pessoa se soma ao resultado coletivo
 description: Entenda como os votos são somados, o que significa votos válidos, por que a contagem é pública e como conferir o resultado oficial.
-date: 2026-10-03
+date: 2026-08-13
 tags: [votacao, contagem, resultado, urna]
 ---
 

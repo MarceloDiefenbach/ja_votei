@@ -1,7 +1,7 @@
 ---
 title: Plebiscito e referendo: o que são e como diferem
 description: Entenda a diferença entre plebiscito e referendo, quando cada um é usado e como a população participa dessas consultas na prática, em linguagem simples.
-date: 2026-10-03
+date: 2026-04-24
 tags: [plebiscito, referendo, participação, democracia]
 ---
 

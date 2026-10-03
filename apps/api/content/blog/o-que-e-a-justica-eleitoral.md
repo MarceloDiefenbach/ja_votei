@@ -1,7 +1,7 @@
 ---
 title: O que é a Justiça Eleitoral e qual o papel dela
 description: Entenda o que é a Justiça Eleitoral no Brasil, quais órgãos a compõem e o papel de cada um na organização das eleições e da apuração.
-date: 2026-10-03
+date: 2026-03-17
 tags: [justica eleitoral, TSE, TRE, como funciona]
 ---
 A Justiça Eleitoral é o conjunto de órgãos responsáveis por organizar as eleições no Brasil. Ela funciona como uma estrutura específica, separada do resto do Poder Judiciário.

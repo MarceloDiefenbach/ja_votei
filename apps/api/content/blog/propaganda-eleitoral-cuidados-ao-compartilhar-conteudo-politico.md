@@ -1,7 +1,7 @@
 ---
 title: Propaganda eleitoral: como compartilhar com cuidado
 description: Entenda o que é propaganda eleitoral, por que as regras mudam ao longo do ano e como compartilhar conteúdo político sem espalhar informação falsa.
-date: 2026-10-03
+date: 2026-06-30
 tags: [propaganda, redes sociais, checagem, midia]
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Como pesquisar propostas de candidatos com senso crítico
 description: Guia prático para pesquisar propostas de quem se candidata com método: buscar a fonte original, comparar propostas e evitar erros comuns.
-date: 2026-10-03
+date: 2026-06-09
 tags: [pesquisa, propostas, senso critico, checagem]
 ---
 Pesquisar propostas antes de votar pode ser mais simples do que parece. O segredo é ter um método e evitar cair em material emocional. Este texto é um guia de método, sem saber dizer o que é melhor para ninguém.

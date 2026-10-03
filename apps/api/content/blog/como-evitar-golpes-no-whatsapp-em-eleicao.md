@@ -1,7 +1,7 @@
 ---
 title: Como evitar golpes no WhatsApp em época de eleição
 description: Mensagens de golpe usam o nome de candidatos, do TSE e do aplicativo e-Título para enganar. Veja como reconhecer e se proteger no WhatsApp.
-date: 2026-10-03
+date: 2026-08-28
 tags: [golpes, whatsapp, desinformação, segurança]
 ---
 Toda eleição aumenta o volume de mensagens falsas. O golpe mais comum deixa de fora a urna e se concentra no celular: links que prometem ajudar, comparar candidatos, consultar resultado ou recadastrar o título. A boa notícia é que quase sempre há um detalhe fácil de perceber.

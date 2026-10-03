@@ -1,7 +1,7 @@
 ---
 title: Checklist do que levar para votar (e o que não levar)
 description: Documento com foto e um pouco de antecedência: o checklist prático do que levar e o que deixar em casa no dia da votação.
-date: 2026-10-03
+date: 2026-09-15
 tags: [voto, checklist, eleicoes, documentacao]
 ---
 A maior parte do estresse do dia da votação vem de duas coisas: documento faltando e local errado. Dá para eliminar as duas com um pouco de antecedência.

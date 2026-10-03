@@ -1,7 +1,7 @@
 ---
 title: Impostos e serviços públicos: a lógica de como se relacionam
 description: Entenda a relação entre impostos e serviços públicos, por que o pagamento não garante atendimento imediato e como o dinheiro é aplicado.
-date: 2026-10-03
+date: 2026-05-05
 tags: [impostos, servicos, transparencia,gestao]
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: O que é democracia: conceitos básicos em linguagem simples
 description: Entenda o que significa democracia, como os poderes se separam, por que regras claras protegem quem vota e qual é o seu papel como eleitor.
-date: 2026-10-03
+date: 2026-03-10
 tags: [democracia, cidadania, poderes, direitos]
 ---
 

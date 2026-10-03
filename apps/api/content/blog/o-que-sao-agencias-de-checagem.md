@@ -1,7 +1,7 @@
 ---
 title: O que são agências de checagem e como usar
 description: Entenda o que são agências de checagem de fatos, como elas trabalham, o que elas avaliam e como usar isso na prática do dia a dia.
-date: 2026-10-03
+date: 2026-06-04
 tags: [checagem, agencias, desinformacao, educacao midiática]
 ---
 Agências de checagem são veículos que conferem informações viralizadas e dizem se elas são verdadeiras ou falsas. Elas existem porque, em períodos de eleição, uma parte grande do que circula não é confiável.

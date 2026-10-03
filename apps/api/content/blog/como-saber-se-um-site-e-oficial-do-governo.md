@@ -1,7 +1,7 @@
 ---
 title: Como saber se um site é oficial do governo
 description: Aprenda a reconhecer um site oficial do governo antes de informar dados pessoais: confira o endereço, procure o selo e compare com a fonte da página.
-date: 2026-10-03
+date: 2026-07-09
 tags: [sites oficiais, governo, golpes, verificação]
 ---
 Digitar um dado pessoal em um site errado é o caminho mais curto para um problema grande. A boa notícia é que existem sinais simples que revelam se um endereço da internet pertence a um órgão público ou se é uma imitação.

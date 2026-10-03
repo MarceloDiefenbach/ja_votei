@@ -1,7 +1,7 @@
 ---
 title: Eleição majoritária ou proporcional: como funciona cada uma
 description: Entenda a diferença entre eleição majoritária e eleição proporcional, com exemplos simples de como os votos são contados em cada sistema.
-date: 2026-10-03
+date: 2026-04-10
 tags: [eleicoes, majoritaria, proporcional, como funciona]
 ---
 No Brasil existem dois sistemas básicos de eleição: o majoritário e o proporcional. Entender a diferença ajuda a interpretar os resultados e também a entender por que às vezes há "/" lista com vários nomes.

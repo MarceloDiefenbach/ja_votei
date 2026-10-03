@@ -1,7 +1,7 @@
 ---
 title: Como montar um repertório de fontes de informação confiáveis
 description: Aprenda a reunir fontes variadas e confiáveis sobre eleições, combinando canais oficiais, reportagem, dados e consulta local.
-date: 2026-10-03
+date: 2026-05-29
 tags: [informacao, fontes, checagem,apuracao]
 ---
 

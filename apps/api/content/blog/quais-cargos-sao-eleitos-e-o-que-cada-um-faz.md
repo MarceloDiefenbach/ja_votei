@@ -1,7 +1,7 @@
 ---
 title: Quais cargos são escolhidos nas eleições e o que cada um faz
 description: Entenda os cargos eletivos no Brasil, o que cada um faz na prática e a diferença entre os níveis federal, estadual e municipal.
-date: 2026-10-03
+date: 2026-03-24
 tags: [eleicoes, cargos, cargos eletivos, como funciona]
 ---
 Nas eleições brasileiras você vota para vários cargos ao mesmo tempo. Cada cargo tem um escopo diferente de responsabilidade e cada um é eleito por um sistema próprio. Entender quem faz o que ajuda a interpretarloseu voto com mais clareza.

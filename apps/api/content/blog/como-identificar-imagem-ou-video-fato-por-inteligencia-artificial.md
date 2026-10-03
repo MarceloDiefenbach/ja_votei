@@ -1,7 +1,7 @@
 ---
 title: Como reconhecer conteúdo feito por inteligência artificial
 description: Mãos, dentes, reflexos e voz: dicas práticas para perceber quando uma imagem, um vídeo ou um áudio foi gerado por inteligência artificial.
-date: 2026-10-03
+date: 2026-07-03
 tags: [inteligencia artificial, desinformacao, checagem, midias]
 ---
 Com a melhora dos modelos, fica cada vez mais difícil saber se uma imagem, um vídeo ou um áudio foi gerado por máquina. Nenhum sinal isolado resolve a questão, mas a combinação de vários detalhes costuma entregar o material.

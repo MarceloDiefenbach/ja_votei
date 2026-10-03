@@ -1,7 +1,7 @@
 ---
 title: Como lidar com o cansaço de notícias de política
 description: Excesso de notícia política gera ansiedade e cansaço. Veja como filtrar o excesso, recuperar o controle e continuar informado com calma.
-date: 2026-10-03
+date: 2026-06-16
 tags: [ansiedade, cansaco, midia, bem-estar]
 ---
 Na época de eleição muita gente chega ao cansaço. O celular avisa sobre política o dia inteiro, a conversa com a família gira em torno do mesmo assunto e chega uma hora em que a pessoa desiste de tentar entender. Isso é comum e tem nome: fadiga de informação.
