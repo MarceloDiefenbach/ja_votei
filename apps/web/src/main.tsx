@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Camera } from "lucide-react";
 import votei13 from "@/assets/votei-13.png";
 import votei22 from "@/assets/votei-22.png";
 import votei14 from "@/assets/votei-14.png";
@@ -31,6 +31,7 @@ export const candidates = [
     number: "22",
     colors: "bg-green-700 text-yellow-300",
     badge: votei22,
+    card: "/cards/card-pl.png",
     tagline: "Brasil verde e amarelo de volta.",
     prompt: "Foto de campanha no estilo do PL: verde e amarelo, bandeira do Brasil ao fundo, camisa da seleção, tom patriota, incluindo o selo oficial da campanha",
   },
@@ -41,6 +42,7 @@ export const candidates = [
     number: "14",
     colors: "bg-zinc-800 text-white",
     badge: votei14,
+    card: "/cards/card-missao.png",
     tagline: "Renovação e futuro para o país.",
     prompt: "Foto de campanha do Renan Santos: identidade do partido Missão, número 14 em destaque, tom jovem e renovador, incluindo o selo oficial da campanha",
   },
@@ -51,6 +53,7 @@ export const candidates = [
     number: "55",
     colors: "bg-purple-700 text-white",
     badge: votei55,
+    card: "/cards/card-psd.png",
     tagline: "Experiência que entrega resultado.",
     prompt: "Foto de campanha do Ronaldo Caiado: identidade do PSD, número 55 em destaque, tom de liderança e experiência, incluindo o selo oficial da campanha",
   },
@@ -163,7 +166,149 @@ function CreditsPill({ credits, loading }: { credits: number; loading: boolean }
   );
 }
 
+/** Traço de marca-texto desenhado à mão, sob "Votei". */
+function MarkerUnderline() {
+  return (
+    <svg
+      className="absolute -bottom-2 left-0 w-full text-yellow-400"
+      height="18"
+      viewBox="0 0 220 18"
+      fill="none"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M4 12.5C42 5.5 92 3.5 138 5.5c28 1.2 52 3.5 78 6"
+        stroke="currentColor"
+        strokeWidth="9"
+        strokeLinecap="round"
+        opacity="0.9"
+      />
+    </svg>
+  );
+}
+
+/** Blob amarelo decorativo atrás da colagem de polaroids. */
+function Blob() {
+  return (
+    <svg
+      className="absolute -inset-4 -z-10 h-full w-full text-amber-300"
+      viewBox="0 0 400 400"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M200 25c55 0 105 20 138 55s50 90 46 138-38 88-80 112-100 30-140 22-84-30-108-72-30-95-22-140 26-84 66-108S145 25 200 25z" />
+    </svg>
+  );
+}
+
+/** Colagem de polaroids com os candidatos, giradas como na referência. */
+function PolaroidCollage({ onPick }: { onPick: (slug: string) => void }) {
+  const tiles = [
+    { slug: "pt", rotate: "-rotate-6", lift: "-translate-y-3", z: "z-10" },
+    { slug: "pl", rotate: "rotate-3", lift: "translate-y-2", z: "z-20" },
+    { slug: "missao", rotate: "-rotate-2", lift: "translate-y-6", z: "z-30" },
+  ];
+  return (
+    <div className="relative flex items-center justify-center py-6 lg:py-0">
+      <Blob />
+      <div className="relative flex items-center gap-1">
+        {tiles.map(t => {
+          const c = candidates.find(x => x.slug === t.slug);
+          if (!c) return null;
+          return (
+            <button
+              key={t.slug}
+              type="button"
+              onClick={() => onPick(t.slug)}
+              aria-label={`Escolher ${c.name}, ${c.party}`}
+              className={`group relative ${t.rotate} ${t.lift} ${t.z} w-28 transition-transform duration-300 hover:rotate-0 hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-32 lg:w-36`}
+            >
+              <span className="block rounded-lg bg-white p-1.5 pb-5 shadow-xl ring-1 ring-black/10 transition-shadow group-hover:shadow-2xl">
+                <span className="block overflow-hidden rounded-[3px] bg-muted">
+                  {c.card ? (
+                    <img
+                      src={c.card}
+                      alt={c.name}
+                      className="block w-full object-cover"
+                      style={{ aspectRatio: "1 / 1", objectPosition: "60% 16%" }}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span className={`block w-full ${c.colors}`} style={{ aspectRatio: "1 / 1" }} />
+                  )}
+                </span>
+                <span className="mt-1.5 block text-center text-[9px] font-semibold uppercase tracking-wide text-neutral-500">
+                  {c.party.split(" — ")[0]}
+                </span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/** Arte do hero (polaroids + seta "Envie sua foto" + blob). Cai na colagem em DOM se faltar o arquivo. */
+function HeroArtwork({ onPick }: { onPick: (slug: string) => void }) {
+  const [ok, setOk] = React.useState(false);
+
+  if (ok) {
+    return (
+      <picture>
+        <source srcSet="/hero/hero.webp" type="image/webp" />
+        <img
+          src="/hero/hero.png"
+          alt="Exemplos de fotos de campanha geradas pelo Já Votei"
+          onLoad={() => setOk(true)}
+          width={1100}
+          height={698}
+          className="mx-auto w-full max-w-md select-none lg:ml-auto lg:mr-0 lg:max-w-xl"
+          draggable={false}
+        />
+      </picture>
+    );
+  }
+
+  return (
+    <div className="relative">
+      <img
+        src="/hero/hero.png"
+        alt=""
+        aria-hidden="true"
+        onLoad={() => setOk(true)}
+        className="hidden"
+      />
+      <PolaroidCollage onPick={onPick} />
+    </div>
+  );
+}
+
 function CandidateCard({ c, onSelect }: { c: (typeof candidates)[number]; onSelect: () => void }) {
+  const [artOk, setArtOk] = React.useState(Boolean(c.card));
+
+  // A arte já vem com nome, número e botão desenhados — então ela é o card inteiro.
+  // Se o arquivo não carregar, cai no card em DOM com o mesmo conteúdo.
+  if (c.card && artOk) {
+    return (
+      <button
+        type="button"
+        onClick={onSelect}
+        aria-label={`Criar minha foto para ${c.name}, ${c.party}, número ${c.number}`}
+        className="group relative block w-full overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5 transition duration-200 hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      >
+        <img
+          src={c.card}
+          alt={`Cartão do ${c.party}: ${c.name}, número ${c.number}`}
+          onError={() => setArtOk(false)}
+          className="block w-full transition-transform duration-300 group-hover:scale-[1.03]"
+          loading="lazy"
+        />
+      </button>
+    );
+  }
+
   return (
     <button
       type="button"
@@ -205,26 +350,47 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-muted/40">
-      {/* fundo decorativo */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-red-600/10 via-transparent to-transparent" />
+      <div className="relative mx-auto max-w-6xl px-6 pb-16">
+        <header className="grid items-center gap-8 pt-12 pb-12 lg:grid-cols-2 lg:gap-10 lg:pt-16">
+          <div className="max-w-lg text-center lg:text-left">
+            <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl">
+              Já{" "}
+              <span className="relative inline-block text-red-600">
+                Votei
+                <MarkerUnderline />
+              </span>
+            </h1>
+            <p className="mt-5 text-lg text-muted-foreground">
+              Envie sua foto e receba uma imagem de campanha com o selo oficial — pronta para compartilhar.
+            </p>
 
-      <div className="relative mx-auto max-w-5xl px-6 pb-16">
-        <header className="flex flex-col items-center gap-4 pt-14 pb-10 text-center">
-          <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-medium uppercase tracking-widest text-muted-foreground shadow-xs">
-            Foto de campanha com IA
-          </span>
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl">Já Votei</h1>
-          <p className="max-w-xl text-lg text-muted-foreground">
-            Escolha o partido, envie sua foto e receba uma imagem de campanha com o selo oficial — pronta
-            para compartilhar.
-          </p>
-          <CreditsPill credits={credits} loading={loading} />
-          {showEmail && (
-            <div className="w-full max-w-xl pt-2 text-left">
-              <EmailPrompt onSubmit={saveEmail} credits={credits} />
+            <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
+              <a
+                href="#partidos"
+                className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-neutral-900 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900 dark:bg-neutral-50 dark:text-neutral-900 dark:hover:bg-white"
+              >
+                Escolher meu partido
+                <ArrowRight className="size-4" />
+              </a>
+              <CreditsPill credits={credits} loading={loading} />
             </div>
-          )}
+
+            <p className="mt-6 inline-flex items-center gap-2 text-xs text-muted-foreground">
+              <Camera className="size-3.5" />
+              Sua foto não é publicada. Cada imagem consome 1 crédito.
+            </p>
+
+            {showEmail && (
+              <div className="mt-6 text-left">
+                <EmailPrompt onSubmit={saveEmail} credits={credits} />
+              </div>
+            )}
+          </div>
+
+          <HeroArtwork onPick={slug => navigate(`/${slug}`)} />
         </header>
+
+        <div id="partidos" className="scroll-mt-6">
 
         <div className="mb-5 flex items-baseline justify-between gap-4 border-t pt-6">
           <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
@@ -233,10 +399,11 @@ function Home() {
           <span className="text-xs text-muted-foreground">{candidates.length} opções</span>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {candidates.map(c => (
             <CandidateCard key={c.slug} c={c} onSelect={() => navigate(`/${c.slug}`)} />
           ))}
+        </div>
         </div>
 
         <p className="mt-8 text-center text-sm text-muted-foreground">

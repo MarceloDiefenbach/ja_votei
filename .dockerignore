@@ -1,0 +1,16 @@
+node_modules
+dist
+.git
+.gitignore
+
+# Segredos: sem isso o "COPY . ." do Dockerfile embute o .env nas camadas do build
+.env
+.env.*
+!.env.example
+
+# Lixo de teste local (5 MB de screenshots/logs)
+.playwright-mcp
+
+*.log
+*.bak
+.DS_Store
