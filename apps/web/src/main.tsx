@@ -8,10 +8,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
-import votei13 from "@/assets/votei-13.png";
-import votei22 from "@/assets/votei-22.png";
-import votei14 from "@/assets/votei-14.png";
-import votei55 from "@/assets/votei-55.png";
+import votei13 from "@/assets/votei-13.webp";
+import votei22 from "@/assets/votei-22.webp";
+import votei14 from "@/assets/votei-14.webp";
+import votei55 from "@/assets/votei-55.webp";
 
 export const candidates = [
   {
@@ -23,7 +23,7 @@ export const candidates = [
     accent: "#ef4444",
     accentFg: "#ffffff",
     badge: votei13,
-    card: "/cards/card-pt.png",
+    card: "/cards/card-pt.webp",
     tagline: "Reconstrução e esperança para o Brasil.",
     prompt: "Foto de campanha no estilo do PT: fundo vermelho, camisa vermelha, bandeira do Brasil, ar de esperança e reconstrução, incluindo o selo oficial da campanha",
   },
@@ -36,7 +36,7 @@ export const candidates = [
     accent: "#facc15",
     accentFg: "#14532d",
     badge: votei22,
-    card: "/cards/card-pl.png",
+    card: "/cards/card-pl.webp",
     tagline: "Brasil verde e amarelo de volta.",
     prompt: "Foto de campanha no estilo do PL: verde e amarelo, bandeira do Brasil ao fundo, camisa da seleção, tom patriota, incluindo o selo oficial da campanha",
   },
@@ -49,7 +49,7 @@ export const candidates = [
     accent: "#f97316",
     accentFg: "#ffffff",
     badge: votei14,
-    card: "/cards/card-missao.png",
+    card: "/cards/card-missao.webp",
     tagline: "Renovação e futuro para o país.",
     prompt: "Foto de campanha do Renan Santos: identidade do partido Missão, número 14 em destaque, tom jovem e renovador, incluindo o selo oficial da campanha",
   },
@@ -62,7 +62,7 @@ export const candidates = [
     accent: "#c084fc",
     accentFg: "#3b0764",
     badge: votei55,
-    card: "/cards/card-psd.png",
+    card: "/cards/card-psd.webp",
     tagline: "Experiência que entrega resultado.",
     prompt: "Foto de campanha do Ronaldo Caiado: identidade do PSD, número 55 em destaque, tom de liderança e experiência, incluindo o selo oficial da campanha",
   },
@@ -297,6 +297,8 @@ function CandidateCard({ c, onSelect }: { c: (typeof candidates)[number]; onSele
           src={c.card}
           alt={`Cartão do ${c.party}: ${c.name}, número ${c.number}`}
           onError={() => setArtOk(false)}
+          width={539}
+          height={703}
           className="block w-full transition-transform duration-300 group-hover:scale-[1.03]"
           loading="lazy"
         />
