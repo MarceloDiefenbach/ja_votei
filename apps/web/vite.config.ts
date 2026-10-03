@@ -10,6 +10,12 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    proxy: { "/api": "http://localhost:3000" },
+    proxy: {
+      "/api": "http://localhost:3000",
+      // Blog e SEO são renderizados pela API (HTML no servidor).
+      "/blog": "http://localhost:3000",
+      "/sitemap.xml": "http://localhost:3000",
+      "/robots.txt": "http://localhost:3000",
+    },
   },
 });

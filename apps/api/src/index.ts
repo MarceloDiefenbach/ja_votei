@@ -1,6 +1,7 @@
 import { join } from "path";
 import { existsSync } from "fs";
 import { ensureSchema, pool } from "./db";
+import { getPosts, renderIndex, renderNotFound, renderPost, renderRobots, renderRss, renderSitemap } from "./blog";
 import {
   CREDITS_PER_PURCHASE,
   createCheckout,
@@ -188,6 +189,35 @@ Bun.serve({
         spent,
       });
       return isNew ? withCookie(out, id) : out;
+    }
+
+    /* ------------------------------------------------------- blog / SEO -- */
+
+    const html = (body: string, status = 200) =>
+      new Response(body, {
+        status,
+        headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=300" },
+      });
+    const xml = (body: string, type: string) =>
+      new Response(body, { headers: { "Content-Type": `${type}; charset=utf-8`, "Cache-Control": "public, max-age=3600" } });
+
+    if (url.pathname === "/api/blog" && req.method === "GET") {
+      return Response.json(
+        getPosts().map(p => ({ slug: p.slug, title: p.title, description: p.description, date: p.date })),
+        { headers: { "Cache-Control": "public, max-age=300" } },
+      );
+    }
+
+    if (req.method === "GET") {
+      if (url.pathname === "/robots.txt") return xml(renderRobots(), "text/plain");
+      if (url.pathname === "/sitemap.xml") return xml(renderSitemap(), "application/xml");
+      if (url.pathname === "/blog/rss.xml") return xml(renderRss(), "application/rss+xml");
+      if (url.pathname === "/blog" || url.pathname === "/blog/") return html(renderIndex());
+      const m = url.pathname.match(/^\/blog\/([a-z0-9-]+)\/?$/);
+      if (m) {
+        const post = getPosts().find(p => p.slug === m[1]);
+        return post ? html(renderPost(post)) : html(renderNotFound(), 404);
+      }
     }
 
     // static frontend

@@ -341,9 +341,23 @@ function CandidateCard({ c, onSelect }: { c: (typeof candidates)[number]; onSele
   );
 }
 
+type BlogPostLink = { slug: string; title: string; description: string };
+
+function useBlogPosts() {
+  const [posts, setPosts] = React.useState<BlogPostLink[]>([]);
+  React.useEffect(() => {
+    fetch("/api/blog")
+      .then(r => (r.ok ? r.json() : []))
+      .then(setPosts)
+      .catch(() => {});
+  }, []);
+  return posts;
+}
+
 function Home() {
   const navigate = useNavigate();
   const { credits, loading, showEmail, saveEmail } = useCredits();
+  const posts = useBlogPosts();
 
   return (
     <div className="min-h-screen bg-muted/40">
@@ -366,6 +380,28 @@ function Home() {
             <CandidateCard key={c.slug} c={c} onSelect={() => { track("candidate_selected", { candidate: c.slug }); navigate(`/${c.slug}`); }} />
           ))}
         </div>
+
+        {posts.length > 0 && (
+          <section className="mt-14" aria-labelledby="blog-title">
+            <div className="mb-4 flex items-baseline justify-between gap-4">
+              <h2 id="blog-title" className="text-xl font-bold tracking-tight">Antes de votar, leia</h2>
+              <a href="/blog" className="text-sm font-medium text-red-600 hover:underline">Ver todos →</a>
+            </div>
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {posts.map(p => (
+                <li key={p.slug}>
+                  <a
+                    href={`/blog/${p.slug}`}
+                    className="block h-full rounded-xl bg-white p-4 ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-md"
+                  >
+                    <span className="block font-semibold leading-snug">{p.title}</span>
+                    <span className="mt-1 line-clamp-2 block text-sm text-muted-foreground">{p.description}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         <p className="mt-8 text-center text-sm text-muted-foreground">
           Sua foto não é publicada. Cada imagem consome 1 crédito.

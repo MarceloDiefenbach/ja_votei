@@ -6,6 +6,7 @@
     "start": "bun --env-file=../../.env src/index.ts"
   },
   "dependencies": {
+    "marked": "^18.0.14",
     "mysql2": "^3.11.5"
   }
 }
