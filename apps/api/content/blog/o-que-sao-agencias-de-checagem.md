@@ -31,10 +31,10 @@ O que importa é que a conclusão vem com a explicação e com a fonte. Um rótu
 
 Quando você vê uma informação importante e suspeita:
 
-1. copie o texto ou o link da afirmação.
-2. procure esse conteúdo em uma agência de checagem.
-3. leia a explicação, e não só o rótulo.
-4. confira se a conclusão responde à sua dúvida.
+1. Copie o texto ou o link da afirmação.
+2. Procure esse conteúdo em uma agência de checagem.
+3. Leia a explicação, e não só o rótulo.
+4. Confira se a conclusão responde à sua dúvida.
 
 ## O que elas não fazem
 
