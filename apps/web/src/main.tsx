@@ -1,10 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createPortal } from "react-dom";
-import { BrowserRouter, Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import "./index.css";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
@@ -25,7 +24,7 @@ export const candidates = [
     badge: votei13,
     card: "/cards/card-pt.webp",
     tagline: "Reconstrução e esperança para o Brasil.",
-    prompt: "Foto de campanha no estilo do PT: fundo vermelho, camisa vermelha, bandeira do Brasil, ar de esperança e reconstrução, incluindo o selo oficial da campanha",
+    prompt: "",
   },
   {
     slug: "pl",
@@ -38,7 +37,7 @@ export const candidates = [
     badge: votei22,
     card: "/cards/card-pl.webp",
     tagline: "Brasil verde e amarelo de volta.",
-    prompt: "Foto de campanha no estilo do PL: verde e amarelo, bandeira do Brasil ao fundo, camisa da seleção, tom patriota, incluindo o selo oficial da campanha",
+    prompt: "",
   },
   {
     slug: "missao",
@@ -51,7 +50,7 @@ export const candidates = [
     badge: votei14,
     card: "/cards/card-missao.webp",
     tagline: "Renovação e futuro para o país.",
-    prompt: "Foto de campanha do Renan Santos: identidade do partido Missão, número 14 em destaque, tom jovem e renovador, incluindo o selo oficial da campanha",
+    prompt: "",
   },
   {
     slug: "psd",
@@ -64,7 +63,7 @@ export const candidates = [
     badge: votei55,
     card: "/cards/card-psd.webp",
     tagline: "Experiência que entrega resultado.",
-    prompt: "Foto de campanha do Ronaldo Caiado: identidade do PSD, número 55 em destaque, tom de liderança e experiência, incluindo o selo oficial da campanha",
+    prompt: "",
   },
 ];
 
@@ -78,10 +77,38 @@ declare global {
   }
 }
 
+// Log próprio: o servidor sabe quem é pelo cookie de sessão anônima; não enviamos nenhum dado pessoal.
+function sendEvent(name: string, props?: Record<string, unknown>) {
+  try {
+    fetch("/api/events", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, path: window.location.pathname, props }),
+      keepalive: true,
+    }).catch(() => {});
+  } catch {}
+}
+
 function track(name: string, props?: Record<string, unknown>) {
   try {
     window.himetrica?.track(name, props);
   } catch {}
+  sendEvent(name, props);
+}
+
+/** Uma page_view por troca de tela (o app é uma SPA, então o carregamento da página não basta). */
+function PageViews() {
+  const { pathname } = useLocation();
+  React.useEffect(() => {
+    const p = new URLSearchParams(window.location.search);
+    const props: Record<string, unknown> = {};
+    if (document.referrer) {
+      try { props.ref = new URL(document.referrer).hostname; } catch {}
+    }
+    if (p.get("utm_source")) props.utm_source = p.get("utm_source");
+    track("page_view", props);
+  }, [pathname]);
+  return null;
 }
 
 const PACK_PRICE = 10;
@@ -190,18 +217,21 @@ function useEditImage(
 ) {
   const [file, setFile] = React.useState<File | null>(null);
   const [preview, setPreview] = React.useState("");
-  const [prompt, setPrompt] = React.useState("");
+  const [includeCandidate, setIncludeCandidate] = React.useState(false);
   const [result, setResult] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
 
   const onFile = (f: File | null) => {
     setFile(f);
-    setPreview(f ? URL.createObjectURL(f) : "");
+    setPreview(prev => {
+      if (prev) URL.revokeObjectURL(prev);
+      return f ? URL.createObjectURL(f) : "";
+    });
   };
 
   const submit = async () => {
-    if (!file || !prompt) return;
+    if (!file) return;
     if (credits <= 0) {
       setError("Você não tem créditos. Compre mais para gerar imagens.");
       return;
@@ -211,8 +241,8 @@ function useEditImage(
     setResult("");
     const fd = new FormData();
     fd.append("image", file);
-    fd.append("prompt", prompt);
     if (candidateSlug) fd.append("candidate", candidateSlug);
+    fd.append("includeCandidate", String(includeCandidate));
     try {
       const r = await fetch("/api/edit-image", { method: "POST", body: fd });
       const data = await r.json();
@@ -223,7 +253,7 @@ function useEditImage(
       } else if (!r.ok) setError(data.error || "Não foi possível gerar a imagem.");
       else {
         setResult(data.image);
-        track("image_generated", { candidate: candidateSlug });
+        track("image_generated", { candidate: candidateSlug, include_candidate: includeCandidate });
         // O saldo é re-lido do servidor — o front nunca decrementa sozinho.
         refresh();
       }
@@ -234,7 +264,7 @@ function useEditImage(
     }
   };
 
-  return { file, preview, prompt, setPrompt, result, loading, error, onFile, submit };
+  return { file, preview, includeCandidate, setIncludeCandidate, result, loading, error, onFile, submit };
 }
 
 function CreditsPill({ credits, loading }: { credits: number; loading: boolean }) {
@@ -385,13 +415,14 @@ function Home() {
           <section className="mt-14" aria-labelledby="blog-title">
             <div className="mb-4 flex items-baseline justify-between gap-4">
               <h2 id="blog-title" className="text-xl font-bold tracking-tight">Antes de votar, leia</h2>
-              <a href="/blog" className="text-sm font-medium text-red-600 hover:underline">Ver todos →</a>
+              <a href="/blog" onClick={() => track("blog_click", { slug: "todos" })} className="text-sm font-medium text-red-600 hover:underline">Ver todos →</a>
             </div>
             <ul className="grid gap-3 sm:grid-cols-2">
               {posts.map(p => (
                 <li key={p.slug}>
                   <a
                     href={`/blog/${p.slug}`}
+                    onClick={() => track("blog_click", { slug: p.slug })}
                     className="block h-full rounded-xl bg-white p-4 ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-md"
                   >
                     <span className="block font-semibold leading-snug">{p.title}</span>
@@ -461,6 +492,56 @@ function EmailPrompt({ onSubmit, credits }: { onSubmit: (e: string) => Promise<b
   );
 }
 
+type SavedImage = { id: number; candidate: string; secondsLeft: number };
+
+/** Imagens geradas (guardadas 48h no servidor). `reloadKey` muda quando uma nova é criada. */
+function useSavedImages(reloadKey: string) {
+  const [images, setImages] = React.useState<SavedImage[]>([]);
+  React.useEffect(() => {
+    fetch("/api/images")
+      .then(r => (r.ok ? r.json() : { images: [] }))
+      .then(d => setImages(d.images || []))
+      .catch(() => {});
+  }, [reloadKey]);
+  return images;
+}
+
+function timeLeft(seconds: number) {
+  const h = Math.floor(seconds / 3600);
+  if (h >= 1) return `${h}h restantes`;
+  return `${Math.max(1, Math.ceil(seconds / 60))} min restantes`;
+}
+
+function SavedImages({ images }: { images: SavedImage[] }) {
+  if (images.length === 0) return null;
+  return (
+    <section className="w-full max-w-xl mx-auto rounded-2xl bg-white/80 p-4 text-neutral-900 shadow-xl ring-1 ring-white/60 backdrop-blur-md">
+      <h2 className="text-lg font-bold">Suas imagens geradas</h2>
+      <p className="mt-1 text-sm text-neutral-600">
+        Ficam salvas por 48 horas. Baixe as que quiser antes de expirarem.
+      </p>
+      <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        {images.map(img => {
+          const c = candidates.find(x => x.slug === img.candidate);
+          return (
+            <li key={img.id} className="overflow-hidden rounded-lg bg-white ring-1 ring-black/10">
+              <a href={`/api/images/${img.id}`} target="_blank" rel="noreferrer" aria-label="Abrir imagem">
+                <img src={`/api/images/${img.id}`} alt={`Foto gerada — ${c?.party ?? ""}`} loading="lazy" className="aspect-square w-full object-cover" />
+              </a>
+              <div className="flex items-center justify-between gap-2 p-2 text-xs">
+                <span className="text-neutral-500">{timeLeft(img.secondsLeft)}</span>
+                <a href={`/api/images/${img.id}`} download={`ja-votei-${img.id}.png`} onClick={() => track("image_download", { candidate: img.candidate })} className="font-semibold text-red-600 hover:underline">
+                  Baixar
+                </a>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}
+
 function CandidatePage() {
   const { slug } = useParams();
   const c = candidates.find(c => c.slug === slug);
@@ -470,12 +551,13 @@ function CandidatePage() {
     checking, checkMsg, checkPayment,
   } = useCredits();
   const {
-    file, preview, prompt, setPrompt, result, loading, error, onFile, submit,
+    file, preview, includeCandidate, setIncludeCandidate, result, loading, error, onFile, submit,
   } = useEditImage(refresh, credits, requestEmail, c?.slug);
   const [initialized, setInitialized] = React.useState(false);
+  const savedImages = useSavedImages(result);
 
-  const buy = async () => {
-    track("checkout_started", { candidate: c?.slug, price: PACK_PRICE });
+  const buy = async (where: string) => {
+    track("checkout_started", { candidate: c?.slug, price: PACK_PRICE, where });
     const r = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -488,7 +570,6 @@ function CandidatePage() {
 
   React.useEffect(() => {
     if (c && !initialized) {
-      setPrompt(c.prompt);
       setInitialized(true);
     }
   }, [c, initialized]);
@@ -507,11 +588,13 @@ function CandidatePage() {
         }}
       />
       <div className="relative z-10 space-y-8">
-      <header className="text-center space-y-2 pt-6">
-        <p className="uppercase tracking-widest text-sm opacity-80">{c.party} • {c.number}</p>
-        <h1 className="text-4xl font-extrabold">{c.name}</h1>
-        <p className="opacity-90">{c.tagline}</p>
-        <img src={c.badge} className="w-32 h-32 mx-auto object-contain" />
+      <header className="mx-auto flex w-full max-w-xl items-center justify-between gap-4 pt-4">
+        <div className="min-w-0 space-y-1">
+          <p className="text-xs uppercase tracking-widest opacity-80 sm:text-sm">{c.party} • {c.number}</p>
+          <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl">{c.name}</h1>
+          <p className="text-sm opacity-90 sm:text-base">{c.tagline}</p>
+        </div>
+        <img src={c.badge} alt={`Selo Eu já votei ${c.number}`} className="size-24 shrink-0 object-contain sm:size-28" />
       </header>
 
       <Card className="w-full max-w-xl mx-auto bg-white/80 text-neutral-900 shadow-2xl ring-1 ring-white/60 backdrop-blur-md">
@@ -520,38 +603,66 @@ function CandidatePage() {
           <CardDescription>Envie uma foto sua e a IA cria a imagem no estilo da campanha do {c.name}.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <label
-            htmlFor="image"
-            className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-muted-foreground/30 bg-muted/50 p-8 text-center cursor-pointer hover:bg-muted transition-colors"
-          >
-            <span className="text-lg font-semibold">Envie sua imagem</span>
-            <span className="text-sm text-muted-foreground">
-              Vamos gerar uma personalizada para você divulgar nas redes sociais
+          {/* Uma foto por vez: ou o campo de envio, ou a foto escolhida com remover/alterar. */}
+          <input
+            id="image"
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={e => {
+              if (e.target.files?.[0]) track("photo_selected", { candidate: c.slug });
+              onFile(e.target.files?.[0] ?? null);
+              e.target.value = ""; // permite escolher o mesmo arquivo de novo
+            }}
+          />
+          {preview ? (
+            <div className="space-y-3">
+              <img src={preview} alt="Sua foto" className="w-full rounded-xl object-cover" />
+              <div className="grid grid-cols-2 gap-3">
+                <Button type="button" variant="outline" onClick={() => { track("photo_removed"); onFile(null); }}>
+                  Remover
+                </Button>
+                <Button type="button" variant="outline" onClick={() => { track("photo_changed"); document.getElementById("image")?.click(); }}>
+                  Alterar foto
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <label
+              htmlFor="image"
+              className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-muted-foreground/30 bg-muted/50 p-8 text-center cursor-pointer hover:bg-muted transition-colors"
+            >
+              <span className="text-lg font-semibold">Envie sua imagem</span>
+              <span className="text-sm text-muted-foreground">
+                Vamos gerar uma personalizada para você divulgar nas redes sociais
+              </span>
+            </label>
+          )}
+          <label className="flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-neutral-900/10 bg-white/70 p-3">
+            <span className="min-w-0">
+              <span className="block text-sm font-semibold">Aparecer junto com o {c.name}</span>
+              <span className="block text-xs text-neutral-600">
+                Inclui a foto do candidato ao lado da sua na imagem gerada.
+              </span>
             </span>
-            {file && <span className="text-xs text-primary font-medium">{file.name}</span>}
             <input
-              id="image"
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={e => onFile(e.target.files?.[0] ?? null)}
+              type="checkbox"
+              checked={includeCandidate}
+              onChange={e => setIncludeCandidate(e.target.checked)}
+              className="peer sr-only"
             />
+            <span className="relative h-6 w-11 shrink-0 rounded-full bg-neutral-300 transition-colors after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:bg-neutral-900 peer-checked:after:translate-x-5 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-neutral-900" />
           </label>
-          {preview && <img src={preview} className="rounded-md w-full" />}
-          <div className="space-y-2">
-            <Label htmlFor="prompt">Como você quer a imagem?</Label>
-            <Textarea id="prompt" value={prompt} onChange={e => setPrompt(e.target.value)} rows={3} />
-          </div>
           {!creditsLoading && credits <= 0 ? (
             <button
-              onClick={buy}
+              onClick={() => buy("botao_principal")}
               style={{ background: c.accent, color: c.accentFg }}
-              className="w-full rounded-lg px-4 py-3 text-base font-bold shadow-lg transition hover:brightness-110 active:scale-[0.99]"
+              className="w-full rounded-lg px-4 py-4 text-lg font-bold shadow-lg transition hover:brightness-110 active:scale-[0.99]"
             >
               Comprar créditos — R$ 10 →
             </button>
           ) : (
-            <Button onClick={submit} disabled={loading || creditsLoading || !file || !prompt} className="w-full">
+            <Button onClick={() => { track("generate_clicked", { candidate: c.slug }); submit(); }} disabled={loading || creditsLoading || !file} className="h-16 w-full text-xl font-bold">
               {loading ? "Criando sua foto..." : creditsLoading ? "Carregando..." : "Criar foto com o selo"}
             </Button>
           )}
@@ -572,7 +683,7 @@ function CandidatePage() {
                 <p className="text-sm text-amber-900">
                   Terminou de pagar? O Pix pode demorar alguns minutos para confirmar.
                 </p>
-                <Button onClick={checkPayment} disabled={checking} className="w-full">
+                <Button onClick={() => { track("ja_paguei_clicked"); checkPayment(); }} disabled={checking} className="w-full">
                   {checking ? "Conferindo pagamento..." : "Já paguei"}
                 </Button>
                 {checkMsg && <p className="text-sm text-amber-900">{checkMsg}</p>}
@@ -597,7 +708,7 @@ function CandidatePage() {
                 <li>✓ Foto pronta para postar nas redes</li>
               </ul>
               <button
-                onClick={buy}
+                onClick={() => buy("painel_oferta")}
                 className="relative mt-4 w-full rounded-lg bg-[var(--accent)] px-4 py-3 text-base font-bold text-[var(--accent-fg)] shadow-lg transition hover:brightness-110 active:scale-[0.99]"
               >
                 Quero meus 10 créditos →
@@ -610,10 +721,13 @@ function CandidatePage() {
             <div className="space-y-2">
               <Label>Resultado</Label>
               <img src={result} className="rounded-md w-full" />
+              <p className="text-xs text-neutral-600">Sua imagem fica salva por 48 horas na lista "Suas imagens geradas", mais abaixo.</p>
             </div>
           )}
         </CardContent>
       </Card>
+
+      <SavedImages images={savedImages} />
 
       <div className="text-center">
         <Link to="/" className="opacity-80 underline">← Escolher outro candidato</Link>
@@ -625,6 +739,7 @@ function CandidatePage() {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
+    <PageViews />
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/:slug" element={<CandidatePage />} />

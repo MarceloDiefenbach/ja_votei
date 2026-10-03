@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { logEvent } from "./events";
 import { pool } from "./db";
 
 const ABACATEPAY_API = "https://api.abacatepay.com/v2";
@@ -177,6 +178,9 @@ async function creditForBill(billId: string) {
       );
     }
     await conn.commit();
+    if (upd.affectedRows === 1) {
+      await logEvent(purchase.session_id, "purchase_paid", null, { credits: purchase.credits, bill: billId });
+    }
     return { ok: true as const, already: upd.affectedRows === 0 };
   } catch (e) {
     await conn.rollback();

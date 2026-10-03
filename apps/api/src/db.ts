@@ -60,5 +60,34 @@ export async function ensureSchema() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 
+  // Imagens geradas, guardadas por 48h (ver images.ts). Binário PNG, não base64: ~25% menor.
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS generated_images (
+      id BIGINT AUTO_INCREMENT PRIMARY KEY,
+      session_id CHAR(64) NOT NULL,
+      candidate VARCHAR(64) NOT NULL,
+      image MEDIUMBLOB NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      expires_at TIMESTAMP NOT NULL,
+      KEY idx_session (session_id),
+      KEY idx_expires (expires_at)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  // Log de eventos de uso (ver events.ts). Sem dado pessoal: só o id da sessão anônima.
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS events (
+      id BIGINT AUTO_INCREMENT PRIMARY KEY,
+      session_id CHAR(64) NOT NULL,
+      name VARCHAR(64) NOT NULL,
+      path VARCHAR(255) NULL,
+      props VARCHAR(1024) NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      KEY idx_name_created (name, created_at),
+      KEY idx_session (session_id),
+      KEY idx_created (created_at)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
   console.log("[db] schema ensured");
 }

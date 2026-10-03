@@ -1,6 +1,9 @@
 import { join } from "path";
 import { existsSync } from "fs";
 import { ensureSchema, pool } from "./db";
+import { allowEvent, isClientEvent, logEvent, summary } from "./events";
+import { getImage, listImages, saveImage } from "./images";
+import { buildPrompt, candidatePhotoFile, isKnownCandidate, sealFile } from "./imagePrompt";
 import { getPosts, renderIndex, renderNotFound, renderPost, renderRobots, renderRss, renderSitemap } from "./blog";
 import {
   CREDITS_PER_PURCHASE,
@@ -136,14 +139,51 @@ Bun.serve({
       return isNew ? withCookie(res, id) : res;
     }
 
+    if (url.pathname === "/api/events" && req.method === "POST") {
+      const { id, isNew } = sessionFor(req);
+      const body = await req.json().catch(() => ({}));
+      if (isClientEvent(body.name) && allowEvent(id)) {
+        await logEvent(id, body.name, body.path, body.props);
+      }
+      const res = new Response(null, { status: 204 });
+      return isNew ? withCookie(res, id) : res;
+    }
+
+    // Painel: só com ADMIN_TOKEN configurado (Authorization: Bearer <token>).
+    if (url.pathname === "/api/admin/events" && req.method === "GET") {
+      const token = process.env.ADMIN_TOKEN;
+      if (!token || req.headers.get("authorization") !== `Bearer ${token}`) {
+        return new Response("Not found", { status: 404 });
+      }
+      return Response.json(await summary(Number(url.searchParams.get("days") || 7)));
+    }
+
+    if (url.pathname === "/api/images" && req.method === "GET") {
+      const { id, isNew } = sessionFor(req);
+      const res = Response.json({ images: await listImages(id) });
+      return isNew ? withCookie(res, id) : res;
+    }
+
+    const imgMatch = url.pathname.match(/^\/api\/images\/(\d+)$/);
+    if (imgMatch && req.method === "GET") {
+      const { id } = sessionFor(req);
+      const img = await getImage(id, Number(imgMatch[1]));
+      if (!img) return new Response("Imagem não encontrada ou expirada.", { status: 404 });
+      return new Response(img, {
+        headers: { "Content-Type": "image/png", "Cache-Control": "private, max-age=300" },
+      });
+    }
+
     if (url.pathname === "/api/edit-image" && req.method === "POST") {
       const { id, isNew } = sessionFor(req);
       const form = await req.formData();
       const file = form.get("image");
-      const prompt = form.get("prompt");
+      const prompt = String(form.get("prompt") ?? ""); // ajustes de estilo, opcionais
       const candidate = form.get("candidate");
-      if (!(file instanceof File) || typeof prompt !== "string" || !prompt) {
-        return Response.json({ error: "image and prompt required" }, { status: 400 });
+      // Toggle do front: o candidato entra ou não na imagem gerada.
+      const includeCandidate = form.get("includeCandidate") === "true";
+      if (!(file instanceof File)) {
+        return Response.json({ error: "Envie uma imagem." }, { status: 400 });
       }
 
       // O saldo é validado no servidor. O front não decide se pode gerar.
@@ -164,10 +204,21 @@ Bun.serve({
         return isNew ? withCookie(res, id) : res;
       }
 
+      if (!isKnownCandidate(candidate)) {
+        return Response.json({ error: "Escolha um partido válido." }, { status: 400 });
+      }
+
+      // A foto da pessoa + o selo oficial do partido entram como imagens de referência.
+      // Com o toggle ligado, a foto do candidato entra no meio (prompt conta as posições).
       const fd = new FormData();
       fd.append("model", process.env.OPENAI_IMAGE_MODEL || "gpt-image-1");
-      fd.append("prompt", prompt);
-      fd.append("image", file);
+      fd.append("prompt", buildPrompt(candidate, prompt, includeCandidate));
+      fd.append("image[]", file);
+      if (includeCandidate) {
+        const photo = candidatePhotoFile(candidate);
+        fd.append("image[]", new File([await photo.arrayBuffer()], photo.name, { type: photo.type }));
+      }
+      fd.append("image[]", new File([await sealFile(candidate).arrayBuffer()], `selo-${candidate}.webp`, { type: "image/webp" }));
       const res = await fetch("https://api.openai.com/v1/images/edits", {
         method: "POST",
         headers: { Authorization: `Bearer ${process.env.OPENAI_IMAGE_KEY || process.env.OPENAI_API_KEY}` },
@@ -179,12 +230,23 @@ Bun.serve({
         return isNew ? withCookie(r, id) : r;
       }
 
-      // Só debita depois que a imagem saiu.
-      const spent = await spendCredit(id, typeof candidate === "string" ? candidate.slice(0, 64) : null);
+      // Guarda a imagem ANTES de debitar: se algo falhar daqui em diante, ela já está salva.
       const b64 = data.data?.[0]?.b64_json;
-      const urlImg = data.data?.[0]?.url;
+      let imageId: number | null = null;
+      if (b64) {
+        try {
+          imageId = await saveImage(id, candidate, b64);
+        } catch (e) {
+          console.error("[images] falha ao salvar:", (e as Error).message);
+        }
+      }
+
+      // Só debita depois que a imagem saiu.
+      const spent = await spendCredit(id, candidate);
+      await logEvent(id, "image_generated", `/${candidate}`, { candidate });
       const out = Response.json({
-        image: b64 ? `data:image/png;base64,${b64}` : urlImg,
+        image: b64 ? `data:image/png;base64,${b64}` : data.data?.[0]?.url,
+        imageId,
         credits: await getCredits(id),
         spent,
       });

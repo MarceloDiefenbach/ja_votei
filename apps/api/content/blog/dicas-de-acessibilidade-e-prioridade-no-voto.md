@@ -63,7 +63,7 @@ Se a estrutura não permitir o acesso, o procedimento é pedir o encaminhamento 
 
 ## Perguntas frequentes
 
-**Preciso declarar a deficiência para ter prioridade?** Nao. A prioridade é informada ao fiscal de urna no momento do atendimento.
+**Preciso declarar a deficiência para ter prioridade?** Não. A prioridade é informada ao fiscal de urna no momento do atendimento.
 
 **Posso entrar com acompanhante?** Pode. Em situações previstas em lei, o acompanhante pode ajudar na comunicação, mas não vota no seu lugar.
 

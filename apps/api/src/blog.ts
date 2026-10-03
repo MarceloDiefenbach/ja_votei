@@ -188,6 +188,7 @@ ${(o.jsonLd || []).map(j => `<script type="application/ld+json">${JSON.stringify
 ${o.body}
 <footer>© ${new Date().getFullYear()} ${SITE_NAME}</footer>
 </div>
+<script>(function(){function s(n,p){try{fetch("/api/events",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:n,path:location.pathname,props:p}),keepalive:true})}catch(e){}}var r="";try{r=document.referrer?new URL(document.referrer).hostname:""}catch(e){}s("page_view",r?{ref:r}:{});document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-track]");if(a)s(a.getAttribute("data-track"))})})()</script>
 </body>
 </html>`;
 }
@@ -269,7 +270,7 @@ export function renderPost(p: Post): string {
 ${p.tags.length ? `<div class="tags">${p.tags.map(t => `<span>${esc(t)}</span>`).join("")}</div>` : ""}
 ${p.html}
 </article>
-<aside class="cta"><strong>Crie sua foto de campanha com o selo oficial</strong><br><a href="/">Começar agora</a></aside></main>`,
+<aside class="cta"><strong>Crie sua foto de campanha com o selo oficial</strong><br><a href="/" data-track="blog_cta_click">Começar agora</a></aside></main>`,
   });
 }
 
