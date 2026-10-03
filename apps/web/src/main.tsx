@@ -68,6 +68,24 @@ export const candidates = [
   },
 ];
 
+// Himetrica (script no index.html). Falha em silêncio: bloqueador de anúncios não pode quebrar o app.
+declare global {
+  interface Window {
+    himetrica?: {
+      track: (name: string, props?: Record<string, unknown>) => void;
+      identify: (user: { name?: string; email?: string; metadata?: Record<string, unknown> }) => void;
+    };
+  }
+}
+
+function track(name: string, props?: Record<string, unknown>) {
+  try {
+    window.himetrica?.track(name, props);
+  } catch {}
+}
+
+const PACK_PRICE = 10;
+
 function useCredits() {
   const [credits, setCredits] = React.useState(0);
   const [email, setEmail] = React.useState("");
@@ -86,11 +104,20 @@ function useCredits() {
     setLoading(false);
   }, []);
 
+  // Identifica quem já informou o email (nos retornos também, pois o tracker não guarda sessão do nosso app).
+  React.useEffect(() => {
+    if (!email) return;
+    try {
+      window.himetrica?.identify({ email, metadata: { type: "customer" } });
+    } catch {}
+  }, [email]);
+
   React.useEffect(() => {
     refresh();
     // Quem volta do pagamento precisa revalidar no servidor.
     const params = new URLSearchParams(window.location.search);
     if (params.get("paid")) {
+      track("purchase_completed", { product_id: "pack_10_creditos", price: PACK_PRICE, credits: 10 });
       setShowEmail(true);
       params.delete("paid");
       const qs = params.toString();
@@ -109,6 +136,7 @@ function useCredits() {
       setCredits(Number(data.credits || 0));
       setEmail(String(data.email || email));
       setShowEmail(false);
+      track("email_saved");
       return true;
     }
     return false;
@@ -129,6 +157,7 @@ function useCredits() {
         setPending(Boolean(data.pending));
         if (data.confirmed) {
           setCheckMsg("Pagamento confirmado! Seus créditos já estão disponíveis.");
+          track("purchase_completed", { product_id: "pack_10_creditos", price: PACK_PRICE, credits: 10, via: "ja_paguei" });
           setShowEmail(true);
           return true;
         }
@@ -194,6 +223,7 @@ function useEditImage(
       } else if (!r.ok) setError(data.error || "Não foi possível gerar a imagem.");
       else {
         setResult(data.image);
+        track("image_generated", { candidate: candidateSlug });
         // O saldo é re-lido do servidor — o front nunca decrementa sozinho.
         refresh();
       }
@@ -331,7 +361,7 @@ function Home() {
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {candidates.map(c => (
-            <CandidateCard key={c.slug} c={c} onSelect={() => navigate(`/${c.slug}`)} />
+            <CandidateCard key={c.slug} c={c} onSelect={() => { track("candidate_selected", { candidate: c.slug }); navigate(`/${c.slug}`); }} />
           ))}
         </div>
 
@@ -407,6 +437,7 @@ function CandidatePage() {
   const [initialized, setInitialized] = React.useState(false);
 
   const buy = async () => {
+    track("checkout_started", { candidate: c?.slug, price: PACK_PRICE });
     const r = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
