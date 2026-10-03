@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { ArrowRight } from "lucide-react";
 import votei13 from "@/assets/votei-13.png";
 import votei22 from "@/assets/votei-22.png";
 import votei14 from "@/assets/votei-14.png";
@@ -19,6 +20,7 @@ export const candidates = [
     number: "13",
     colors: "bg-red-600 text-white",
     badge: votei13,
+    card: "/cards/card-pt.png",
     tagline: "Reconstrução e esperança para o Brasil.",
     prompt: "Foto de campanha no estilo do PT: fundo vermelho, camisa vermelha, bandeira do Brasil, ar de esperança e reconstrução, incluindo o selo oficial da campanha",
   },
@@ -56,28 +58,47 @@ export const candidates = [
 
 function useCredits() {
   const [credits, setCredits] = React.useState(0);
+  const [loading, setLoading] = React.useState(true);
+  const [showEmail, setShowEmail] = React.useState(false);
+
+  const refresh = React.useCallback(async () => {
+    const r = await fetch("/api/credits");
+    const data = await r.json();
+    setCredits(Number(data.credits || 0));
+    setLoading(false);
+  }, []);
+
   React.useEffect(() => {
+    refresh();
+    // Quem volta do pagamento precisa revalidar no servidor.
     const params = new URLSearchParams(window.location.search);
-    const gained = Number(params.get("credits") || 0);
-    const stored = Number(localStorage.getItem("credits") || 0);
-    const total = stored + gained;
-    localStorage.setItem("credits", String(total));
-    setCredits(total);
-    if (gained) {
-      params.delete("credits");
+    if (params.get("paid")) {
+      setShowEmail(true);
+      params.delete("paid");
       const qs = params.toString();
       window.history.replaceState({}, "", window.location.pathname + (qs ? `?${qs}` : ""));
     }
-  }, []);
-  const spend = () => {
-    const next = credits - 1;
-    localStorage.setItem("credits", String(next));
-    setCredits(next);
+  }, [refresh]);
+
+  const saveEmail = async (email: string) => {
+    const r = await fetch("/api/credits/email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    if (r.ok) {
+      const data = await r.json();
+      setCredits(Number(data.credits || 0));
+      setShowEmail(false);
+      return true;
+    }
+    return false;
   };
-  return { credits, spend };
+
+  return { credits, loading, refresh, showEmail, saveEmail };
 }
 
-function useEditImage(spend: () => void, credits: number) {
+function useEditImage(refresh: () => void, credits: number) {
   const [file, setFile] = React.useState<File | null>(null);
   const [preview, setPreview] = React.useState("");
   const [prompt, setPrompt] = React.useState("");
@@ -108,7 +129,8 @@ function useEditImage(spend: () => void, credits: number) {
       if (!r.ok) setError(data.error || "Não foi possível gerar a imagem.");
       else {
         setResult(data.image);
-        spend();
+        // O saldo é re-lido do servidor — o front nunca decrementa sozinho.
+        refresh();
       }
     } catch {
       setError("Falha na requisição. Tente novamente.");
@@ -120,35 +142,145 @@ function useEditImage(spend: () => void, credits: number) {
   return { file, preview, prompt, setPrompt, result, loading, error, onFile, submit };
 }
 
+function CreditsPill({ credits, loading }: { credits: number; loading: boolean }) {
+  if (loading) {
+    return (
+      <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-sm text-muted-foreground shadow-xs">
+        <span className="size-1.5 animate-pulse rounded-full bg-muted-foreground" />
+        Carregando saldo...
+      </span>
+    );
+  }
+  return (
+    <span
+      className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-medium shadow-xs ${
+        credits > 0 ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700" : "border-border bg-background text-muted-foreground"
+      }`}
+    >
+      <span className={`size-1.5 rounded-full ${credits > 0 ? "bg-emerald-500" : "bg-muted-foreground"}`} />
+      {credits > 0 ? `${credits} crédito${credits > 1 ? "s" : ""} disponíve${credits > 1 ? "is" : "l"}` : "Sem créditos"}
+    </span>
+  );
+}
+
+function CandidateCard({ c, onSelect }: { c: (typeof candidates)[number]; onSelect: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      className={`group relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-2xl p-6 text-left shadow-sm ring-1 transition duration-200 hover:-translate-y-1 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70 ${c.colors}`}
+    >
+      {/* brilho diagonal no hover */}
+      <span className="pointer-events-none absolute -right-16 -top-16 size-48 rounded-full bg-white/15 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
+
+      <div className="relative flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <span className="inline-flex items-center rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-widest">
+            {c.party}
+          </span>
+          <h2 className="mt-3 text-2xl font-extrabold leading-tight">{c.name}</h2>
+          <p className="mt-1 text-sm opacity-85">{c.tagline}</p>
+        </div>
+        <img
+          src={c.badge}
+          alt={`Selo ${c.party}`}
+          className="size-24 shrink-0 object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-105 sm:size-28"
+        />
+      </div>
+
+      <div className="relative flex items-center justify-between gap-3">
+        <span className="text-xs font-medium uppercase tracking-widest opacity-80">Nº {c.number}</span>
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-sm font-semibold transition-colors group-hover:bg-white/30">
+          Criar minha foto
+          <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+        </span>
+      </div>
+    </button>
+  );
+}
+
 function Home() {
   const navigate = useNavigate();
-  return (
-    <div className="min-h-screen bg-muted/40 p-6 space-y-10">
-      <header className="text-center space-y-2 pt-6">
-        <h1 className="text-4xl font-extrabold tracking-tight">Já Votei</h1>
-        <p className="text-muted-foreground text-lg">
-          Transforme sua foto em uma imagem de campanha — no estilo da sua escolha.
-        </p>
-        <p className="text-muted-foreground">Escolha o candidato e crie sua foto com o selo oficial.</p>
-      </header>
+  const { credits, loading, showEmail, saveEmail } = useCredits();
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
-        {candidates.map(c => (
-          <div key={c.slug} className={`rounded-xl p-6 flex gap-4 min-h-48 shadow overflow-hidden ${c.colors}`}>
-            <div className="flex flex-col justify-between gap-6 flex-1">
-              <div>
-                <p className="text-sm uppercase tracking-widest opacity-80">{c.party}</p>
-                <h2 className="text-2xl font-bold">{c.name}</h2>
-                <p className="text-sm opacity-90 mt-1">{c.tagline}</p>
-              </div>
-              <Button variant="secondary" className="self-start" onClick={() => navigate(`/${c.slug}`)}>
-                Criar foto para esse candidato
-              </Button>
+  return (
+    <div className="min-h-screen bg-muted/40">
+      {/* fundo decorativo */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-red-600/10 via-transparent to-transparent" />
+
+      <div className="relative mx-auto max-w-5xl px-6 pb-16">
+        <header className="flex flex-col items-center gap-4 pt-14 pb-10 text-center">
+          <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-medium uppercase tracking-widest text-muted-foreground shadow-xs">
+            Foto de campanha com IA
+          </span>
+          <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl">Já Votei</h1>
+          <p className="max-w-xl text-lg text-muted-foreground">
+            Escolha o partido, envie sua foto e receba uma imagem de campanha com o selo oficial — pronta
+            para compartilhar.
+          </p>
+          <CreditsPill credits={credits} loading={loading} />
+          {showEmail && (
+            <div className="w-full max-w-xl pt-2 text-left">
+              <EmailPrompt onSubmit={saveEmail} credits={credits} />
             </div>
-            <img src={c.badge} className="w-44 h-44 self-center object-contain" />
-          </div>
-        ))}
+          )}
+        </header>
+
+        <div className="mb-5 flex items-baseline justify-between gap-4 border-t pt-6">
+          <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+            Escolha um partido
+          </h2>
+          <span className="text-xs text-muted-foreground">{candidates.length} opções</span>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          {candidates.map(c => (
+            <CandidateCard key={c.slug} c={c} onSelect={() => navigate(`/${c.slug}`)} />
+          ))}
+        </div>
+
+        <p className="mt-8 text-center text-sm text-muted-foreground">
+          Cada imagem consome 1 crédito. Você pode comprar mais a qualquer momento na página do candidato.
+        </p>
       </div>
+    </div>
+  );
+}
+
+function EmailPrompt({ onSubmit, credits }: { onSubmit: (e: string) => Promise<boolean>; credits: number }) {
+  const [email, setEmail] = React.useState("");
+  const [saving, setSaving] = React.useState(false);
+  const [err, setErr] = React.useState("");
+
+  const save = async () => {
+    setSaving(true);
+    setErr("");
+    const ok = await onSubmit(email);
+    if (!ok) setErr("Confira o email e tente novamente.");
+    setSaving(false);
+  };
+
+  return (
+    <div className="rounded-lg border border-green-600/40 bg-green-500/10 p-4 space-y-3">
+      <p className="font-semibold">
+        {credits > 0 ? `Pagamento confirmado — ${credits} créditos disponíveis!` : "Pagamento recebido"}
+      </p>
+      <p className="text-sm text-muted-foreground">
+        Deixe seu email para guardar a prova da compra e não perder seus créditos.
+      </p>
+      <div className="flex gap-2">
+        <input
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          placeholder="seu@email.com"
+          className="flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm"
+        />
+        <Button onClick={save} disabled={saving || !email}>
+          {saving ? "Salvando..." : "Salvar"}
+        </Button>
+      </div>
+      {err && <p className="text-sm text-destructive">{err}</p>}
     </div>
   );
 }
@@ -156,8 +288,10 @@ function Home() {
 function CandidatePage() {
   const { slug } = useParams();
   const c = candidates.find(c => c.slug === slug);
-  const { credits, spend } = useCredits();
-  const { file, preview, prompt, setPrompt, result, loading, error, onFile, submit } = useEditImage(spend, credits);
+  const { credits, loading: creditsLoading, refresh, showEmail, saveEmail } = useCredits();
+  const {
+    file, preview, prompt, setPrompt, result, loading, error, onFile, submit,
+  } = useEditImage(refresh, credits);
   const [initialized, setInitialized] = React.useState(false);
 
   const buy = async () => {
@@ -223,15 +357,20 @@ function CandidatePage() {
             <Label htmlFor="prompt">Como você quer a imagem?</Label>
             <Textarea id="prompt" value={prompt} onChange={e => setPrompt(e.target.value)} rows={3} />
           </div>
-          <Button onClick={submit} disabled={loading || !file || !prompt || credits <= 0} className="w-full">
-            {loading ? "Criando sua foto..." : "Criar foto com o selo"}
+          <Button onClick={submit} disabled={loading || creditsLoading || !file || !prompt || credits <= 0} className="w-full">
+            {loading ? "Criando sua foto..." : creditsLoading ? "Carregando..." : "Criar foto com o selo"}
           </Button>
           <p className="text-center text-sm text-muted-foreground">
-            Você tem <strong>{credits}</strong> crédito(s) • cada imagem consome 1
+            {creditsLoading ? (
+              "Carregando seu saldo..."
+            ) : (
+              <>Você tem <strong>{credits}</strong> crédito(s) • cada imagem consome 1</>
+            )}
           </p>
           <Button variant="outline" onClick={buy} className="w-full">
             Comprar 10 créditos — R$ 10 (Pix ou Cartão)
           </Button>
+          {showEmail && <EmailPrompt onSubmit={saveEmail} credits={credits} />}
           {error && <p className="text-sm text-destructive">{error}</p>}
           {result && (
             <div className="space-y-2">
