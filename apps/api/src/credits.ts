@@ -108,7 +108,9 @@ export async function getEmail(sessionId: string): Promise<string> {
 
 /* --------------------------------------------------------------- checkout -- */
 
-export async function createCheckout(sessionId: string, origin: string) {
+export async function createCheckout(sessionId: string, origin: string, candidate?: string) {
+  // Volta para a tela do partido de onde a pessoa saiu (slug validado: só vira path da URL).
+  const back = candidate && /^[a-z0-9-]{1,32}$/.test(candidate) ? `/${candidate}` : "/";
   const res = await fetch(`${ABACATEPAY_API}/checkouts/create`, {
     method: "POST",
     headers: {
@@ -119,10 +121,12 @@ export async function createCheckout(sessionId: string, origin: string) {
       items: [{ id: process.env.ABACATEPAY_PRODUCT_ID, quantity: 1 }],
       methods: ["PIX", "CARD"],
       card: { maxInstallments: 1 },
-      returnUrl: `${origin}/`,
+      returnUrl: `${origin}${back}`,
       // Só a volta. Nenhum crédito vem pela URL.
-      completionUrl: `${origin}/?paid=1`,
-      externalId: `sess_${sessionId}`,
+      completionUrl: `${origin}${back}?paid=1`,
+      // Único por tentativa: a AbacatePay devolve o MESMO checkout para um externalId repetido,
+      // então reusar o da sessão reabria a cobrança antiga (já paga → "link não encontrado").
+      externalId: `sess_${sessionId.slice(0, 16)}_${Date.now().toString(36)}`,
       metadata: { sessionId, credits: CREDITS_PER_PURCHASE },
     }),
   });

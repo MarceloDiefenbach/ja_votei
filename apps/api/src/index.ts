@@ -104,7 +104,8 @@ Bun.serve({
       const { id, isNew } = sessionFor(req);
       const origin = req.headers.get("origin") || `http://localhost:5173`;
       try {
-        const { billId, url } = await createCheckout(id, origin);
+        const body = await req.json().catch(() => ({}));
+        const { billId, url } = await createCheckout(id, origin, typeof body.candidate === "string" ? body.candidate : undefined);
         const res = Response.json({ url, billId });
         return isNew ? withCookie(res, id) : res;
       } catch (e) {

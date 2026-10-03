@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { createPortal } from "react-dom";
 import { BrowserRouter, Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
 import "./index.css";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ArrowRight, Camera } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import votei13 from "@/assets/votei-13.png";
 import votei22 from "@/assets/votei-22.png";
 import votei14 from "@/assets/votei-14.png";
@@ -19,6 +20,8 @@ export const candidates = [
     party: "PT — Partido dos Trabalhadores",
     number: "13",
     colors: "bg-red-600 text-white",
+    accent: "#ef4444",
+    accentFg: "#ffffff",
     badge: votei13,
     card: "/cards/card-pt.png",
     tagline: "Reconstrução e esperança para o Brasil.",
@@ -30,6 +33,8 @@ export const candidates = [
     party: "PL — Partido Liberal",
     number: "22",
     colors: "bg-green-700 text-yellow-300",
+    accent: "#facc15",
+    accentFg: "#14532d",
     badge: votei22,
     card: "/cards/card-pl.png",
     tagline: "Brasil verde e amarelo de volta.",
@@ -41,6 +46,8 @@ export const candidates = [
     party: "Missão",
     number: "14",
     colors: "bg-zinc-800 text-white",
+    accent: "#f97316",
+    accentFg: "#ffffff",
     badge: votei14,
     card: "/cards/card-missao.png",
     tagline: "Renovação e futuro para o país.",
@@ -52,6 +59,8 @@ export const candidates = [
     party: "PSD",
     number: "55",
     colors: "bg-purple-700 text-white",
+    accent: "#c084fc",
+    accentFg: "#3b0764",
     badge: votei55,
     card: "/cards/card-psd.png",
     tagline: "Experiência que entrega resultado.",
@@ -137,7 +146,9 @@ function useCredits() {
 
   return {
     credits, email, pending, loading, refresh,
-    showEmail, saveEmail, requestEmail,
+    // Quem já informou o email não precisa informar de novo em outra compra.
+    showEmail: showEmail && !loading && !email,
+    saveEmail, requestEmail,
     checking, checkMsg, checkPayment,
   };
 }
@@ -239,103 +250,6 @@ function MarkerUnderline() {
   );
 }
 
-/** Blob amarelo decorativo atrás da colagem de polaroids. */
-function Blob() {
-  return (
-    <svg
-      className="absolute -inset-4 -z-10 h-full w-full text-amber-300"
-      viewBox="0 0 400 400"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M200 25c55 0 105 20 138 55s50 90 46 138-38 88-80 112-100 30-140 22-84-30-108-72-30-95-22-140 26-84 66-108S145 25 200 25z" />
-    </svg>
-  );
-}
-
-/** Colagem de polaroids com os candidatos, giradas como na referência. */
-function PolaroidCollage({ onPick }: { onPick: (slug: string) => void }) {
-  const tiles = [
-    { slug: "pt", rotate: "-rotate-6", lift: "-translate-y-3", z: "z-10" },
-    { slug: "pl", rotate: "rotate-3", lift: "translate-y-2", z: "z-20" },
-    { slug: "missao", rotate: "-rotate-2", lift: "translate-y-6", z: "z-30" },
-  ];
-  return (
-    <div className="relative flex items-center justify-center py-6 lg:py-0">
-      <Blob />
-      <div className="relative flex items-center gap-1">
-        {tiles.map(t => {
-          const c = candidates.find(x => x.slug === t.slug);
-          if (!c) return null;
-          return (
-            <button
-              key={t.slug}
-              type="button"
-              onClick={() => onPick(t.slug)}
-              aria-label={`Escolher ${c.name}, ${c.party}`}
-              className={`group relative ${t.rotate} ${t.lift} ${t.z} w-28 transition-transform duration-300 hover:rotate-0 hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-32 lg:w-36`}
-            >
-              <span className="block rounded-lg bg-white p-1.5 pb-5 shadow-xl ring-1 ring-black/10 transition-shadow group-hover:shadow-2xl">
-                <span className="block overflow-hidden rounded-[3px] bg-muted">
-                  {c.card ? (
-                    <img
-                      src={c.card}
-                      alt={c.name}
-                      className="block w-full object-cover"
-                      style={{ aspectRatio: "1 / 1", objectPosition: "60% 16%" }}
-                      loading="lazy"
-                    />
-                  ) : (
-                    <span className={`block w-full ${c.colors}`} style={{ aspectRatio: "1 / 1" }} />
-                  )}
-                </span>
-                <span className="mt-1.5 block text-center text-[9px] font-semibold uppercase tracking-wide text-neutral-500">
-                  {c.party.split(" — ")[0]}
-                </span>
-              </span>
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-/** Arte do hero (polaroids + seta "Envie sua foto" + blob). Cai na colagem em DOM se faltar o arquivo. */
-function HeroArtwork({ onPick }: { onPick: (slug: string) => void }) {
-  const [ok, setOk] = React.useState(false);
-
-  if (ok) {
-    return (
-      <picture>
-        <source srcSet="/hero/hero.webp" type="image/webp" />
-        <img
-          src="/hero/hero.png"
-          alt="Exemplos de fotos de campanha geradas pelo Já Votei"
-          onLoad={() => setOk(true)}
-          width={1100}
-          height={698}
-          className="mx-auto w-full max-w-md select-none lg:ml-auto lg:mr-0 lg:max-w-xl"
-          draggable={false}
-        />
-      </picture>
-    );
-  }
-
-  return (
-    <div className="relative">
-      <img
-        src="/hero/hero.png"
-        alt=""
-        aria-hidden="true"
-        onLoad={() => setOk(true)}
-        className="hidden"
-      />
-      <PolaroidCollage onPick={onPick} />
-    </div>
-  );
-}
-
 function CandidateCard({ c, onSelect }: { c: (typeof candidates)[number]; onSelect: () => void }) {
   const [artOk, setArtOk] = React.useState(Boolean(c.card));
 
@@ -401,67 +315,43 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-muted/40">
-      <div className="relative mx-auto max-w-6xl px-6 pb-16">
-        <header className="grid items-center gap-8 pt-12 pb-12 lg:grid-cols-2 lg:gap-10 lg:pt-16">
-          <div className="max-w-lg text-center lg:text-left">
-            <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl">
-              Já{" "}
-              <span className="relative inline-block text-red-600">
-                Votei
-                <MarkerUnderline />
-              </span>
-            </h1>
-            <p className="mt-5 text-lg text-muted-foreground">
-              Envie sua foto e receba uma imagem de campanha com o selo oficial — pronta para compartilhar.
-            </p>
-
-            <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
-              <a
-                href="#partidos"
-                className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-neutral-900 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900 dark:bg-neutral-50 dark:text-neutral-900 dark:hover:bg-white"
-              >
-                Escolher meu partido
-                <ArrowRight className="size-4" />
-              </a>
-              <CreditsPill credits={credits} loading={loading} />
-            </div>
-
-            <p className="mt-6 inline-flex items-center gap-2 text-xs text-muted-foreground">
-              <Camera className="size-3.5" />
-              Sua foto não é publicada. Cada imagem consome 1 crédito.
-            </p>
-
-            {showEmail && (
-              <div className="mt-6 text-left">
-                <EmailPrompt onSubmit={saveEmail} credits={credits} />
-              </div>
-            )}
-          </div>
-
-          <HeroArtwork onPick={slug => navigate(`/${slug}`)} />
+      <div className="mx-auto max-w-4xl px-6 pb-16">
+        <header className="flex items-center justify-between gap-4 py-6">
+          <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
+            Já{" "}
+            <span className="relative inline-block text-red-600">
+              Votei
+              <MarkerUnderline />
+            </span>
+          </h1>
+          <CreditsPill credits={credits} loading={loading} />
         </header>
 
-        <div id="partidos" className="scroll-mt-6">
+        {showEmail && <EmailModal onSubmit={saveEmail} credits={credits} />}
 
-        <div className="mb-5 flex items-baseline justify-between gap-4 border-t pt-6">
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-            Escolha um partido
-          </h2>
-          <span className="text-xs text-muted-foreground">{candidates.length} opções</span>
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {candidates.map(c => (
             <CandidateCard key={c.slug} c={c} onSelect={() => navigate(`/${c.slug}`)} />
           ))}
         </div>
-        </div>
 
         <p className="mt-8 text-center text-sm text-muted-foreground">
-          Cada imagem consome 1 crédito. Você pode comprar mais a qualquer momento na página do candidato.
+          Sua foto não é publicada. Cada imagem consome 1 crédito.
         </p>
       </div>
     </div>
+  );
+}
+
+// Portal no body: o Card tem backdrop-blur, que prenderia o position:fixed dentro dele.
+function EmailModal(props: { onSubmit: (e: string) => Promise<boolean>; credits: number }) {
+  return createPortal(
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-md rounded-2xl bg-white p-2 text-neutral-900 shadow-2xl">
+        <EmailPrompt {...props} />
+      </div>
+    </div>,
+    document.body,
   );
 }
 
@@ -507,7 +397,7 @@ function CandidatePage() {
   const { slug } = useParams();
   const c = candidates.find(c => c.slug === slug);
   const {
-    credits, pending, loading: creditsLoading, refresh,
+    credits, email, pending, loading: creditsLoading, refresh,
     showEmail, saveEmail, requestEmail,
     checking, checkMsg, checkPayment,
   } = useCredits();
@@ -517,7 +407,11 @@ function CandidatePage() {
   const [initialized, setInitialized] = React.useState(false);
 
   const buy = async () => {
-    const r = await fetch("/api/checkout", { method: "POST" });
+    const r = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ candidate: c?.slug }),
+    });
     const data = await r.json();
     if (data.url) window.location.href = data.url;
     else alert(data.error || "Erro ao criar checkout");
@@ -551,7 +445,7 @@ function CandidatePage() {
         <img src={c.badge} className="w-32 h-32 mx-auto object-contain" />
       </header>
 
-      <Card className="w-full max-w-xl mx-auto">
+      <Card className="w-full max-w-xl mx-auto bg-white/80 text-neutral-900 shadow-2xl ring-1 ring-white/60 backdrop-blur-md">
         <CardHeader>
           <CardTitle>Sua foto de campanha</CardTitle>
           <CardDescription>Envie uma foto sua e a IA cria a imagem no estilo da campanha do {c.name}.</CardDescription>
@@ -579,31 +473,69 @@ function CandidatePage() {
             <Label htmlFor="prompt">Como você quer a imagem?</Label>
             <Textarea id="prompt" value={prompt} onChange={e => setPrompt(e.target.value)} rows={3} />
           </div>
-          <Button onClick={submit} disabled={loading || creditsLoading || !file || !prompt || credits <= 0} className="w-full">
-            {loading ? "Criando sua foto..." : creditsLoading ? "Carregando..." : "Criar foto com o selo"}
-          </Button>
-          <p className="text-center text-sm text-muted-foreground">
-            {creditsLoading ? (
-              "Carregando seu saldo..."
-            ) : (
-              <>Você tem <strong>{credits}</strong> crédito(s) • cada imagem consome 1</>
-            )}
-          </p>
-          {pending && (
-            <div className="rounded-lg border border-border bg-muted/50 p-3 space-y-2">
-              <p className="text-sm text-muted-foreground">
-                Terminou de pagar? O Pix pode demorar alguns minutos para confirmar.
-              </p>
-              <Button onClick={checkPayment} disabled={checking} className="w-full">
-                {checking ? "Conferindo pagamento..." : "Já paguei"}
-              </Button>
-              {checkMsg && <p className="text-sm text-muted-foreground">{checkMsg}</p>}
-            </div>
+          {!creditsLoading && credits <= 0 ? (
+            <button
+              onClick={buy}
+              style={{ background: c.accent, color: c.accentFg }}
+              className="w-full rounded-lg px-4 py-3 text-base font-bold shadow-lg transition hover:brightness-110 active:scale-[0.99]"
+            >
+              Comprar créditos — R$ 10 →
+            </button>
+          ) : (
+            <Button onClick={submit} disabled={loading || creditsLoading || !file || !prompt} className="w-full">
+              {loading ? "Criando sua foto..." : creditsLoading ? "Carregando..." : "Criar foto com o selo"}
+            </Button>
           )}
-          <Button variant="outline" onClick={buy} className="w-full">
-            Comprar 10 créditos — R$ 10 (Pix ou Cartão)
-          </Button>
-          {showEmail && <EmailPrompt onSubmit={saveEmail} credits={credits} />}
+          <div style={{ "--accent": c.accent, "--accent-fg": c.accentFg } as React.CSSProperties} className="rounded-2xl border border-neutral-900/10 bg-white/70 p-4 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-neutral-500">Seu saldo</p>
+                <p className="text-3xl font-extrabold leading-none mt-1">
+                  {creditsLoading ? "…" : credits}
+                  <span className="ml-1 text-sm font-medium text-neutral-500">crédito{credits === 1 ? "" : "s"}</span>
+                </p>
+              </div>
+              <p className="text-right text-xs text-neutral-500">1 crédito =<br />1 foto nova</p>
+            </div>
+
+            {pending && (
+              <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 space-y-2">
+                <p className="text-sm text-amber-900">
+                  Terminou de pagar? O Pix pode demorar alguns minutos para confirmar.
+                </p>
+                <Button onClick={checkPayment} disabled={checking} className="w-full">
+                  {checking ? "Conferindo pagamento..." : "Já paguei"}
+                </Button>
+                {checkMsg && <p className="text-sm text-amber-900">{checkMsg}</p>}
+              </div>
+            )}
+
+            <div className="relative overflow-hidden rounded-xl bg-neutral-900 p-4 text-white">
+              <span className="pointer-events-none absolute -right-10 -top-10 size-32 rounded-full bg-[var(--accent)]/30 blur-2xl" />
+              <span className="relative inline-flex rounded-full bg-[var(--accent)] px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-[var(--accent-fg)]">
+                Melhor oferta
+              </span>
+              <div className="relative mt-3 flex items-end justify-between gap-3">
+                <div>
+                  <p className="text-lg font-bold">Pacote com 10 fotos</p>
+                  <p className="text-sm text-white/70">Só R$ 1 por foto • sem assinatura</p>
+                </div>
+                <p className="text-3xl font-extrabold">R$ 10</p>
+              </div>
+              <ul className="relative mt-3 space-y-1 text-sm text-white/85">
+                <li>✓ Pix aprovado na hora ou cartão</li>
+                <li>✓ Créditos não expiram</li>
+                <li>✓ Foto pronta para postar nas redes</li>
+              </ul>
+              <button
+                onClick={buy}
+                className="relative mt-4 w-full rounded-lg bg-[var(--accent)] px-4 py-3 text-base font-bold text-[var(--accent-fg)] shadow-lg transition hover:brightness-110 active:scale-[0.99]"
+              >
+                Quero meus 10 créditos →
+              </button>
+            </div>
+          </div>
+          {(showEmail || (!creditsLoading && credits > 0 && !email)) && <EmailModal onSubmit={saveEmail} credits={credits} />}
           {error && <p className="text-sm text-destructive">{error}</p>}
           {result && (
             <div className="space-y-2">
