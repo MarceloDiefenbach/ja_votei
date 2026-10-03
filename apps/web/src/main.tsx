@@ -616,9 +616,10 @@ function CandidatePage() {
             }}
           />
           {preview ? (
-            <div className="space-y-3">
-              <img src={preview} alt="Sua foto" className="w-full rounded-xl object-cover" />
-              <div className="grid grid-cols-2 gap-3">
+            <div className="flex items-center gap-3 rounded-xl border border-neutral-900/10 bg-white/70 p-3">
+              {/* Miniatura: a foto em tamanho grande empurrava o toggle e o botão para fora da tela. */}
+              <img src={preview} alt="Sua foto" className="size-20 shrink-0 rounded-lg object-cover" />
+              <div className="grid flex-1 grid-cols-2 gap-2">
                 <Button type="button" variant="outline" onClick={() => { track("photo_removed"); onFile(null); }}>
                   Remover
                 </Button>
