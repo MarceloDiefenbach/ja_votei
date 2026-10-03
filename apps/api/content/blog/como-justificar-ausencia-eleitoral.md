@@ -3,9 +3,7 @@ title: Como justificar ausência eleitoral: prazo e documentos
 description: Não pôde votar? Veja como e quando justificar a ausência eleitoral, quais documentos são aceitos e onde fazer o pedido de forma oficial.
 date: 2026-10-03
 tags: [justificativa, ausencia eleitoral, eleicoes]
-draft: true
 ---
-
 Quem não votou pode justificar a ausência. A justificativa explica a falta e preserva a regularidade da sua situação eleitoral. É um procedimento simples, feito pelo próprio eleitor, sem precisar ir a cartório.
 
 ## O que é a justificativa de ausência
@@ -60,8 +58,6 @@ Cada caso tem sua regra. Se você está em dúvida sobre o comprovante, pergunte
 2. Tire print do pedido enviado, com data e protocolo.
 3. Acompanhe o prazo final: depois dele, a pendência fica mais difícil de resolver.
 4. Em caso de dúvida, procure o Tribunal Regional Eleitoral do seu estado.
-
-
 
 ## Perguntas frequentes
 

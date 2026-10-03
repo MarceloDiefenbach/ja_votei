@@ -3,9 +3,7 @@ title: Dicas para pessoas idosas no dia de votar: conforto e calma
 description: Dicas práticas de conforto e organização para pessoas idosas no dia da votação: calçado, água, horário, acompanhante e paciência na fila.
 date: 2026-10-03
 tags: [pessoas idosas, votacao, acessibilidade, dicas]
-draft: true
 ---
-
 Ir às urnas pode ser um esforço maior para quem tem mais de setenta anos. O ponto principal não é a urna: é o trajeto, a espera e o conforto. Estas dicas ajudam a deixar o dia mais tranquilo.
 
 ## Escolha o horário
@@ -92,14 +90,5 @@ O primeiro passo é consultar o TSE ou o Tribunal Regional Eleitoral do seu esta
 
 ## Perguntas frequentes
 
-**Posso pedir para ser atendido antes?** Existe atendimento prioritário na zona de votação. Informe a sua situação a um mesário.
-
-**Preciso de acompanhante para entrar?** O acompanhante ajuda na locomoção e na comunicação. A cabine é usada só pelo eleitor.
-
-**Vale levar cadeira?** Se a espera for longa, vale perguntar ao local se há assento disponível.
-
-**Posso ir de carro?** Sim, mas confirme as regras de estacionamento da região antes.
-
 **E se eu me sentir mal durante a fila?** Avise um mesário imediatamente. Ele sabe onde pedir ajuda.
 
-Depois de votar, dá para marcar o momento com a foto de campanha "Eu já votei" do Já Votei e compartilhar com quem você quiser.

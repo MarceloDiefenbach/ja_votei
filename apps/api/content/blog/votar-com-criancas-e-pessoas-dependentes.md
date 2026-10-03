@@ -3,9 +3,7 @@ title: Votar com crianças ou pessoas dependentes: planejamento
 description: Dicas práticas de planejamento para votar acompanhado de crianças, idosos ou pessoas com necessidade de apoio, com foco em logística e rotina.
 date: 2026-10-03
 tags: [planejamento, criancas, acessibilidade, dia da votacao]
-draft: true
 ---
-
 Votar acompanhado de crianças, idosos ou pessoas que precisam de apoio exige um pouco de planejamento. A boa notícia é que, com organização, o dia transcorre sem maiores dificuldade.
 
 ## Planeje o horário
@@ -79,14 +77,7 @@ Quem acompanha alguém que depende de ajuda pode encontrar mais dificuldade na r
 
 ## Perguntas frequentes
 
-**Criança pode entrar no local?** O acesso de acompanhantes depende das regras do local e do tipo de eleição. Consulte a prefeitura ou o Tribunal Regional Eleitoral antes do dia.
-
-**Posso levar um acompanhante para ajudar a pessoa a se comunicar?** Sim, em situações previstas em lei. A cabine continua sendo usada só pelo eleitor.
-
-**E se a criança ficar cansada?** Você pode ir em outro horário ou consultar o TSE sobre voto antecipado.
-
 **O local tem cadeiras para aguardar?** Muitos têm. Chegar com um banquinho dobrável ajuda.
 
 **E se o dia estiver muito frio ou quente?** Verifique a previsão e vista a pessoa de forma confortável. Roupa em camadas ajuda a ajustar ao longo do dia.
 
-Depois de votar, dá para marcar o momento com a foto de campanha "Eu já votei" do Já Votei e compartilhar com quem você quiser.

@@ -3,9 +3,7 @@ title: Como funciona a urna eletrônica e por que o voto é sigiloso
 description: Entenda as etapas da votação na urna eletrônica, o que é o hash de controle e por que o voto do eleitor é secreto no Brasil.
 date: 2026-10-03
 tags: [urna eletronica, sigilo do voto, auditoria]
-draft: true
 ---
-
 Saber como a urna funciona ajuda a confiar no resultado e reduz a ansiedade de quem vota pela primeira vez.
 
 ## O caminho do seu voto

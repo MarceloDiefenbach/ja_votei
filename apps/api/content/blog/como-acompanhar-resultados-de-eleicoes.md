@@ -3,9 +3,7 @@ title: Como acompanhar resultados de eleições por fontes confiáveis
 description: Guia para acompanhar o resultado de uma eleição por fontes confiáveis: boletins de apuração, sites oficiais e como evitar números que circulam antes.
 date: 2026-10-03
 tags: [resultados, apuracao, boletins, fontes oficiais]
-draft: true
 ---
-
 Na noite da votação, números circulam antes de qualquer resultado oficial. Este texto explica como acompanhar a apuração sem cair em erro.
 
 ## O que é o boletim de apuração
@@ -103,14 +101,5 @@ Prefira sempre o documento oficial a imagens de redes sociais.
 
 ## Perguntas frequentes
 
-**Resultado parcial pode ser considerado final?** Não. O resultado só é final quando a apuração termina.
-
-**Os totais batem com o que apareceu na urna?** A urna registra cada voto na seção. O boletim consolida esses registros.
-
-**Onde vejo o resultado por município?** Nos canais oficiais do Tribunal Regional Eleitoral do estado.
-
 **Uma projeção é igual ao resultado?** Não. Projeção é uma estimativa feita por métodos estatísticos.
 
-**Vale esperar para compartilhar?** Esperar o resultado oficial evita errar e corrigir depois.
-
-Depois de votar, dá para marcar o momento com a foto de campanha "Eu já votei" do Já Votei e compartilhar com quem você quiser.

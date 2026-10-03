@@ -3,9 +3,7 @@ title: Privacidade nas redes sociais: o que evitar mostrar
 description: Guia de privacidade para redes sociais: o que não expor em fotos e selfies, como ajustar o aplicativo e proteger dados pessoais.
 date: 2026-10-03
 tags: [privacidade, redes sociais, seguranca, dados pessoais]
-draft: true
 ---
-
 Postar fotos é divertido, mas cada foto revela mais do que parece. Neste guia, o foco é prático: o que evitar expor e como reduzir a quantidade de informação que circula sobre você.
 
 ## O que aparece em uma foto sem você perceber
@@ -107,12 +105,5 @@ Imagens de crianças exigem mais cuidado. Evite mostrar:
 
 **Toda foto com endereço é perigosa?** Não, mas vale ter cuidado com a combinação de detalhes. Um conjunto pequeno já permite localizar muita gente.
 
-**Posso postar foto com crianças?** Com o consentimento dos responsáveis e sem expor dados de identificação.
-
 **Meu perfil está aberto, isso é problema?** Pode ser. Perfis abertos facilitam a coleta de informação. Restringir o acesso reduz a exposição.
 
-**A senha do aplicativo e-Título é a mesma do banco?** Nunca use a mesma senha em serviços diferentes.
-
-**Vale apagar publicações antigas?** Vale. Se uma foto antiga tem dados que hoje você não quer expor, apagar é uma boa medida.
-
-Depois de votar, dá para marcar o momento com a foto de campanha "Eu já votei" do Já Votei e compartilhar com quem você quiser.

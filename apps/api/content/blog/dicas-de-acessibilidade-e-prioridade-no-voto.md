@@ -3,9 +3,7 @@ title: Acessibilidade e prioridade no voto: como pedir ajuda
 description: O que a legislação assegura a idosos, pessoas com deficiência, gestantes, lactantes e quem leva criança de colo no dia da votação.
 date: 2026-10-03
 tags: [acessibilidade, prioridade, votacao, deficiencia]
-draft: true
 ---
-
 A Justiça Eleitoral tem regras de atendimento para que a votação de todas as pessoas seja possível. Conhecê-las evita que a pessoa precise explicar a situação várias vezes.
 
 ## Quem tem prioridade na fila
@@ -76,8 +74,4 @@ Se a estrutura não permitir o acesso, o procedimento é pedir o encaminhamento 
 ## Dicas práticas
 
 - Vá com acompanhante, se possível, para ajudar na locomoção e na rotina.
-- Leve o documento com foto e, se quiser, a via digital do e-Título.
-- Não tenha pressa: o atendimento prioritário existe justamente para dar tempo.
-- Se você precisa de um horário específico, o voto antecipado pode ser uma alternativa.
 
-Depois de votar, com o Já Votei você cria a foto de campanha "Eu já votei" e registra a participação.

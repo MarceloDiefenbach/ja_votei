@@ -3,9 +3,7 @@ title: Como tirar uma boa foto de rosto para redes sociais
 description: Dicas práticas de fotografia para redes sociais: luz, fundo, enquadramento, expressão e como melhorar uma foto de rosto com o celular.
 date: 2026-10-03
 tags: [fotografia, redes sociais, fotos, dicas]
-draft: true
 ---
-
 Uma boa foto de rosto não exige equipamento. Com o celular, um pouco de atenção à luz e ao enquadramento já resolve. Este é um guia prático, sem complicação.
 
 ## A luz faz mais diferença que o aparelho
@@ -96,16 +94,7 @@ Corrigir qualquer um desses pontos já muda bastante a foto.
 
 ## Perguntas frequentes
 
-**Preciso de câmera profissional?** Não. A maioria das redes é alimentada por fotos de celular bem iluminadas.
-
 **A câmera frontal distorce o rosto?** Pode, porque a lente fica mais perto. Um braço de distância já melhora.
-
-**Filtros são ruins?** Não. O problema é exagero. Filtro leve, com naturalidade, funciona bem.
-
-**A foto tem que ser profissional para a campanha?** Não. O importante é a pessoa se reconhecer e a imagem ser clara.
-
-**Vale usar foto antiga?** Vale, desde que você goste de como está na imagem.
 
 **Como sei se a foto ficou boa?** Mostre para alguém de confiança e veja se a pessoa se reconhece e se sente bem.
 
-Depois de votar, dá para transformar sua foto em uma imagem de campanha "Eu já votei" com o Já Votei e compartilhar com quem você quiser.

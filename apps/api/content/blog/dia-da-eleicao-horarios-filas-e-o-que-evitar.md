@@ -3,9 +3,7 @@ title: Dia da eleição: horário, filas e o que evitar
 description: O que esperar no dia da votação: horário das zonas eleitorais, como as filas se formam e o que evitar para votar com calma.
 date: 2026-10-03
 tags: [eleicoes, dia da votacao, filas, horarios]
-draft: true
 ---
-
 O dia da votação tem regras simples e conhecidas, mas que geram dúvida todo ano. Este é um resumo prático do que esperar.
 
 ## Horário de funcionamento

@@ -3,9 +3,7 @@ title: e-Título: como usar o app para emitir o título digital
 description: Como usar o aplicativo e-Título para emitir a via digital do título, consultar onde você vota e usar a identificação digital na urna.
 date: 2026-10-03
 tags: [e-Titulo, app, titulo de eleitor, TSE]
-draft: true
 ---
-
 O e-Título é o aplicativo oficial do Tribunal Superior Eleitoral que concentra várias funções da Justiça Eleitoral, inclusive a via digital do título de eleitor.
 
 ## O que é o aplicativo

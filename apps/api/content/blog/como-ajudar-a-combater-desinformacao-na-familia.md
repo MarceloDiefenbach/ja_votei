@@ -3,9 +3,7 @@ title: Como ajudar a combater desinformação na sua família
 description: Dicas práticas para combater desinformação dentro da família: como conversar sem brigar, checar junto e criar o hábito de confirmar antes de repassar.
 date: 2026-10-03
 tags: [desinformacao, familia, checagem, convivencia]
-draft: true
 ---
-
 A desinformação costuma chegar primeiro por quem a gente mais escuta: família, vizinhos e amigos. A boa notícia é que dá para manter um ambiente familiar tranquilo sem transformar a casa em debate.
 
 ## Crie o hábito de perguntar a fonte
@@ -81,13 +79,7 @@ Jovens costumam ter mais familiaridade com ferramentas de verificação. Isso po
 
 **Preciso provar que está errado?** Não precisa. Quem propagou o erro é outra pessoa, e um ambiente com informação boa já reduz o problema.
 
-**Vale corrigir em público?** Evite. Mensagem pública humilha e raramente convence.
-
-**Como sei se uma agência de checagem é confiável?** Leia a metodologia e veja se as evidências estão citadas.
-
 **E se eu mesmo ja errei?** Acontece. Corrija com simplicidade e siga. O importante e o hábito de confirmar antes de repassar.
-
-Depois de votar, dá para marcar o momento com a foto de campanha "Eu já votei" do Já Votei e compartilhar com quem você quiser.
 
 ## Uma frase que funciona
 

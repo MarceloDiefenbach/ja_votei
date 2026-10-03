@@ -3,9 +3,7 @@ title: O que pode e o que não pode fazer no dia da votação
 description: O que é proibido e o que é permitido na zona de votação: propaganda, armas, celular na cabine e como agir na mesa receptora.
 date: 2026-10-03
 tags: [regras de votacao, zona de votacao, conduta na urna]
-draft: true
 ---
-
 Além de votar, existe um conjunto de regras de comportamento na zona de votação. Conhecê-las evita mal-entendidos e situações constrangedoras.
 
 ## O que é proibido na zona de votação

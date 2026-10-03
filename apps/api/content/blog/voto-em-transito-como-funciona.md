@@ -3,9 +3,7 @@ title: Voto em trânsito: como funciona e onde conferir
 description: Entenda como funciona o voto em trânsito dentro do Brasil e no exterior, quem pode usar, como fazer o pedido e onde conferir o local de votação.
 date: 2026-10-03
 tags: [voto em transito, exterior, TSE]
-draft: true
 ---
-
 Estar fora do estado ou do país no dia da votação não impede você de votar. Para isso existe o voto em trânsito. As regras são específicas e vale conhecê-las antes, porque há prazo para se cadastrar.
 
 ## O que é o voto em trânsito

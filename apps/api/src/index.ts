@@ -5,6 +5,7 @@ import { authorize, renderMetrics } from "./metrics";
 import { allowEvent, isClientEvent, logEvent, summary } from "./events";
 import { getImage, listImages, saveImage } from "./images";
 import { buildPrompt, candidatePhotoFile, isKnownCandidate, sealFile } from "./imagePrompt";
+import { appPageSeo, applySeo } from "./blog";
 import { getPosts, renderIndex, renderNotFound, renderPost, renderRobots, renderRss, renderSitemap } from "./blog";
 import {
   CREDITS_PER_PURCHASE,
@@ -303,7 +304,12 @@ Bun.serve({
       return new Response(Bun.file(filePath));
     }
     const index = join(WEB_DIST, "index.html");
-    if (existsSync(index)) return new Response(Bun.file(index));
+    if (existsSync(index)) {
+      // Telas de partido: título, descrição e link canônico próprios no HTML (robôs de busca e de rede social não rodam JS).
+      const seo = appPageSeo(url.pathname);
+      if (seo) return new Response(applySeo(await Bun.file(index).text(), seo), { headers: { "Content-Type": "text/html; charset=utf-8" } });
+      return new Response(Bun.file(index));
+    }
 
     return new Response("Not found", { status: 404 });
   },

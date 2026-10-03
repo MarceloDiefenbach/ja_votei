@@ -2,10 +2,8 @@
 title: Voto branco, voto nulo e abstenção: qual é a diferença
 description: Entenda a diferença entre voto em branco, voto nulo e abstenção, e o que cada um significa na hora de votar na urna eletrônica.
 date: 2026-10-03
-tags: [urna eletronica, voto em branco, voto nulo, aberracao]
-draft: true
+tags: [urna eletronica, voto em branco, voto nulo, abstencao]
 ---
-
 Na urna eletrônica existem três caminhos diferentes quando você não escolhe um candidato. Um deles é o voto em branco. Outro é o voto nulo. O terceiro é não votar naquela posição. A diferença entre os três gera muita dúvida.
 
 ## Voto em branco

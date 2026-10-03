@@ -3,9 +3,7 @@ title: Por que votar importa: participação cidadã no dia a dia
 description: Entenda por que o voto importa, o que muda quando a participação é baixa e como cada pessoa pode participar da vida cívica no dia a dia.
 date: 2026-10-03
 tags: [participacao, votacao, cidadania, exercicio civico]
-draft: true
 ---
-
 Votar é um gesto pequeno em termos de tempo e grande em termos de efeito. Este texto explica, em linguagem simples, por que a participação importa e o que acontece quando ela é baixa.
 
 ## O voto define quem decide
@@ -79,14 +77,5 @@ Quem acompanha com atenção vira uma voz importante na comunidade. Esse papel c
 
 ## Perguntas frequentes
 
-**Um voto muda algo?** Isoladamente, pouco. O que muda é o conjunto de votos.
-
-**Vale votar se não gosto de ninguém?** Votar em branco ou se abster em alguma posição também é uma escolha válida.
-
-**Posso participar sem entender de política?** Sim. Ler sobre um tema específico, como transporte ou saúde, já é participação.
-
 **Preciso convencer alguém para votar?** Não. O mais respeitoso é informar e deixar cada pessoa decidir.
 
-**Como acompanho o resultado?** Pelos canais oficiais da Justiça Eleitoral, com os boletins de apuração.
-
-Depois de votar, dá para marcar o momento com a foto de campanha "Eu já votei" do Já Votei e compartilhar com quem você quiser.

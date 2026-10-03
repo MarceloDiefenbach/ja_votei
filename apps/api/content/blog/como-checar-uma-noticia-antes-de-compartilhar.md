@@ -3,9 +3,7 @@ title: Como checar uma notícia antes de compartilhar
 description: Passo a passo prático para checar uma notícia antes de compartilhar: origem, data, contexto, fontes e o que fazer quando a dúvida permanece.
 date: 2026-10-03
 tags: [checagem, noticias, desinformacao, redes sociais]
-draft: true
 ---
-
 Compartilhar uma notícia sem checar é o caminho mais curto para espalhar um erro. A boa notícia é que a checagem leva poucos minutos e pode ser learned como hábito.
 
 ## Passo 1: olhe para quem publicou
@@ -103,5 +101,3 @@ Uma boa dinâmica é pedir que a pessoa que enviou a mensagem diga onde ela acho
 
 **Se a dúvida persiste, o que faço?** Não compartilho. Prefiro esperar uma confirmação a repassar algo errado.
 
-
-Depois de votar, dá para marcar o momento com a foto de campanha "Eu já votei" do Já Votei e compartilhar com quem você quiser.

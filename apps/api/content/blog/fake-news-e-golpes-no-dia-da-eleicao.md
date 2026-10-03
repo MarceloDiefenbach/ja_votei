@@ -3,9 +3,7 @@ title: Fake news e golpes no dia da eleição: como se proteger
 description: Como identificar notícias falsas e golpes durante a eleição no Brasil: checagem de fontes, cuidado com links e com pedidos de dados pessoais.
 date: 2026-10-03
 tags: [fake news, golpes, eleicoes, checagem]
-draft: true
 ---
-
 O período eleitoral concentra golpes e desinformação porque todo mundo está procurando informação rápida. A boa notícia é que a maior parte da checagem cabe em alguns hábitos simples.
 
 ## Por que a eleição atrai tantos golpes

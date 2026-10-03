@@ -11,7 +11,7 @@ const POSTS_DIR = process.env.BLOG_DIR || join(import.meta.dir, "../content/blog
 export const SITE_URL = (process.env.SITE_URL || "https://javotei.com.br").replace(/\/$/, "");
 const SITE_NAME = "Já Votei";
 const IS_PROD = process.env.NODE_ENV === "production";
-const DEFAULT_IMAGE = "/cards/card-pt.webp";
+const DEFAULT_IMAGE = "/og-default.png"; // 1200x630, neutro (os 4 selos), em apps/web/public
 
 export type Post = {
   slug: string;
@@ -132,6 +132,7 @@ article pre code{background:none;padding:0}
 .card p{margin:4px 0;color:#374151;font-size:16px}
 .cta{margin:48px 0;padding:24px;border-radius:16px;background:var(--fg);color:#fff;text-align:center}
 .cta a{display:inline-block;margin-top:10px;padding:12px 22px;border-radius:999px;background:var(--yellow);color:#171717;font-weight:700;text-decoration:none}
+.more{margin-top:40px}.more h2{font-size:1.2rem}.card h3{margin:0 0 4px;font-size:1.1rem}
 .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
 .tags span{font-size:12px;padding:2px 10px;border-radius:999px;background:#f3f4f6;color:var(--muted)}
 footer{padding:40px 0;color:var(--muted);font-size:14px;text-align:center}
@@ -147,6 +148,7 @@ type PageOpts = {
   jsonLd?: object[];
   published?: string;
   modified?: string;
+  tags?: string[];
   body: string;
 };
 
@@ -171,6 +173,7 @@ function page(o: PageOpts): string {
 <meta property="og:description" content="${esc(o.description)}">
 <meta property="og:url" content="${esc(url)}">
 <meta property="og:image" content="${esc(image)}">
+${o.image ? "" : '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'}${(o.tags || []).map(t => `<meta property="article:tag" content="${esc(t)}">`).join("\n")}
 ${o.published ? `<meta property="article:published_time" content="${o.published}">\n` : ""}${o.modified ? `<meta property="article:modified_time" content="${o.modified}">\n` : ""}<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(o.title)}">
 <meta name="twitter:description" content="${esc(o.description)}">
@@ -227,8 +230,19 @@ export function renderIndex(): string {
   });
 }
 
+/** Links internos: até 3 posts com mais tags em comum (empate: o mais novo). Ajuda o Google e o leitor. */
+function related(p: Post): Post[] {
+  return getPosts()
+    .filter(x => x.slug !== p.slug)
+    .map(x => ({ x, score: x.tags.filter(t => p.tags.includes(t)).length }))
+    .sort((a, b) => b.score - a.score || b.x.date.localeCompare(a.x.date))
+    .slice(0, 3)
+    .map(r => r.x);
+}
+
 export function renderPost(p: Post): string {
   const url = abs(`/blog/${p.slug}`);
+  const more = related(p);
   return page({
     title: p.title,
     description: p.description,
@@ -237,6 +251,7 @@ export function renderPost(p: Post): string {
     type: "article",
     published: p.date,
     modified: p.updated || p.date,
+    tags: p.tags,
     noindex: p.draft,
     jsonLd: [
       {
@@ -270,6 +285,7 @@ export function renderPost(p: Post): string {
 ${p.tags.length ? `<div class="tags">${p.tags.map(t => `<span>${esc(t)}</span>`).join("")}</div>` : ""}
 ${p.html}
 </article>
+${more.length ? `<nav class="more" aria-label="Leia também"><h2>Leia também</h2>${more.map(m => `<a class="card" href="/blog/${m.slug}"><h3>${esc(m.title)}</h3><p>${esc(m.description)}</p></a>`).join("")}</nav>` : ""}
 <aside class="cta"><strong>Crie sua foto de campanha com o selo oficial</strong><br><a href="/" data-track="blog_cta_click">Começar agora</a></aside></main>`,
   });
 }
@@ -310,4 +326,33 @@ export function renderRss(): string {
 
 export function renderRobots(): string {
   return `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /interno/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
+}
+
+
+/* ------------------------------------------------- SEO das telas do app (SPA) -- */
+
+const PARTY_SEO: Record<string, { title: string; description: string }> = {
+  pt: { title: "Foto com o selo Eu já votei 13 | Já Votei", description: "Crie sua foto de campanha com o selo oficial \"Eu já votei 13\" a partir da sua foto, pronta para compartilhar nas redes sociais." },
+  pl: { title: "Foto com o selo Eu já votei 22 | Já Votei", description: "Crie sua foto de campanha com o selo oficial \"Eu já votei 22\" a partir da sua foto, pronta para compartilhar nas redes sociais." },
+  missao: { title: "Foto com o selo Eu já votei 14 | Já Votei", description: "Crie sua foto de campanha com o selo oficial \"Eu já votei 14\" a partir da sua foto, pronta para compartilhar nas redes sociais." },
+  psd: { title: "Foto com o selo Eu já votei 55 | Já Votei", description: "Crie sua foto de campanha com o selo oficial \"Eu já votei 55\" a partir da sua foto, pronta para compartilhar nas redes sociais." },
+};
+
+export function appPageSeo(pathname: string) {
+  const slug = pathname.replace(/^\/|\/$/g, "");
+  const s = PARTY_SEO[slug];
+  return s ? { ...s, url: abs(`/${slug}`) } : null;
+}
+
+/** Troca as tags da home (index.html) pelas da tela pedida. */
+export function applySeo(html: string, seo: { title: string; description: string; url: string }) {
+  const t = esc(seo.title);
+  const d = esc(seo.description);
+  return html
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${t}</title>`)
+    .replace(/(<meta name="description" content=")[^"]*(")/, `$1${d}$2`)
+    .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${esc(seo.url)}$2`)
+    .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${t}$2`)
+    .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${d}$2`)
+    .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${esc(seo.url)}$2`);
 }

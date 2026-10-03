@@ -3,9 +3,7 @@ title: Voto facultativo e obrigatório: o que muda para você
 description: Entenda a diferença entre voto facultativo e voto obrigatório no Brasil, para quem se aplica a obrigação e como a regra funciona na prática.
 date: 2026-10-03
 tags: [voto obrigatorio, voto facultativo, TRE]
-draft: true
 ---
-
 No Brasil, o voto é obrigatório para parte da população e facultativo para outra parte. Entender essa divisão ajuda a tirar dúvidas comuns sobre por que algumas pessoas são cobradas e outras não.
 
 ## O que é voto facultativo
@@ -14,10 +12,11 @@ Voto facultativo é o voto de quem não é obrigado a comparecer às urnas. Não
 
 Abrange, de forma geral:
 
-- Quem tem mais de setenta anos.
-- Quem tem menos de dezoito anos.
-- Portadores de deficiência física.
-- Seções que atendem pessoas com deficiência, e também quem não consegue ir às urnas.
+- Jovens de 16 e 17 anos.
+- Pessoas com 70 anos ou mais.
+- Pessoas que não sabem ler e escrever.
+
+Pessoas com deficiência para quem votar é muito difícil ou impossível podem procurar a Justiça Eleitoral para saber sobre a dispensa. Os detalhes estão em tse.jus.br.
 
 ## O que é obrigatório
 
@@ -79,12 +78,5 @@ Se você está nessa situação, consulte o TSE sobre voto em trânsito e voto a
 
 ## Perguntas frequentes
 
-**Posso faltar se não quero escolher ninguém?** Você pode ir às urnas e votar em branco ou se abster. Isso é diferente de faltar.
-
-**Preciso justificar se votei em branco?** Não. Voto em branco é participação válida.
-
 **Como sei se sou obrigado?** A regra geral se aplica a faixa etária e as condições previstas em lei. Consulte o TSE (tse.jus.br) para a regra atual.
 
-**Quem me cobra?** O sistema registra a ausência, e a regularização aparece quando você tenta usar serviços que exigem título regular.
-
-Depois de votar, dá para marcar o momento com a foto de campanha "Eu já votei" do Já Votei e compartilhar com quem você quiser.

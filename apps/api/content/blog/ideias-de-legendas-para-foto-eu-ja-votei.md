@@ -3,9 +3,7 @@ title: Ideias de legendas para a foto "Eu já votei"
 description: Sugestões de legendas para acompanhar a foto "Eu já votei" nas redes sociais, em linguagem neutra e sem pedir voto a ninguém.
 date: 2026-10-03
 tags: [foto de campanha, legendas, Eu ja votei, redes sociais]
-draft: true
 ---
-
 Acompanhar a foto "Eu já votei" com uma legenda deixa a publicação mais pessoal. As sugestões abaixo são neutras, curtas e não pedem voto a ninguém.
 
 ## Legendas curtas
@@ -84,10 +82,6 @@ Exemplo: votei, fiquei aliviado por ter ido, e a cidade que eu quero depende de 
 
 **É bom usar hashtag?** Ajuda a agrupar publicações, desde que seja com moderação.
 
-**Preciso agradecer quem me incentivou?** Não é obrigatório, mas funciona.
-
-**Quantas hashtags usar?** Poucas e relevantes. Excesso polui a leitura.
-
 **Legenda longa funciona?** Funciona, mas legendas curtas costumam ser mais compartilhadas.
 
 ## Uma palavra sobre o tom
@@ -96,4 +90,3 @@ Legenda é comunicação. O tom que funciona é o tom que parece com você. Se v
 
 Vale lembrar que a foto é sua. Ela pode ser compartilhada em grupos, enviada para amigos ou ficar guardada para você. Ninguém tem obrigação de publicar.
 
-Depois de votar, use o Já Votei para criar a foto de campanha "Eu já votei" e combinar com a legenda que preferir.
