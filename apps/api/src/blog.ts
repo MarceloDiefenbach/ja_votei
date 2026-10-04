@@ -124,6 +124,7 @@ h3{font-size:1.2rem;margin:1.6em 0 .3em}
 .meta{color:var(--muted);font-size:14px}
 article img{max-width:100%;height:auto;border-radius:12px}
 article blockquote{margin:1.4em 0;padding:.2em 1.1em;border-left:4px solid var(--yellow);color:#374151}
+article table{border-collapse:collapse;width:100%;font-size:15px;display:block;overflow-x:auto}article th,article td{border:1px solid var(--line);padding:6px 10px;text-align:left}article th{background:#f3f4f6}
 article pre{overflow:auto;background:#111827;color:#f9fafb;padding:14px;border-radius:10px;font-size:15px}
 article code{background:#f3f4f6;padding:.1em .35em;border-radius:5px;font-size:.9em}
 article pre code{background:none;padding:0}
